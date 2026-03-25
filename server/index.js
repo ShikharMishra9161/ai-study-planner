@@ -28,7 +28,13 @@ const aiRateLimiter = rateLimit({
 });
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://ai-study-planner-omega-five.vercel.app", // your actual Vercel URL
+  ],
+  credentials: true,
+}));
 app.use(express.json());
 app.use(compression());
 
