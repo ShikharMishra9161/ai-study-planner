@@ -1,0 +1,94 @@
+/* ── Global resets & animations ──────────────────────────────────────── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #0b0f1a;
+  color: #e2e8f0;
+  font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Keyframe Animations ─────────────────────────────────────────────── */
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+/* ── Utility classes ─────────────────────────────────────────────────── */
+
+.fade-in {
+  animation: fadeIn 0.4s ease both;
+}
+
+/* ── Input focus glow ────────────────────────────────────────────────── */
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #38bdf8 !important;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.12) !important;
+  outline: none !important;
+}
+
+/* ── Button interactions ─────────────────────────────────────────────── */
+
+button:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+/* ── Nav link hover ──────────────────────────────────────────────────── */
+
+.nav-link:hover {
+  color: #e2e8f0 !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+}
+
+/* ── Logout button hover ─────────────────────────────────────────────── */
+
+.logout-btn:hover {
+  border-color: #f87171 !important;
+  color: #f87171 !important;
+}
+
+/* ── Card hover lift ─────────────────────────────────────────────────── */
+
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────────────── */
+
+::-webkit-scrollbar       { width: 6px; }
+::-webkit-scrollbar-track { background: #111827; }
+::-webkit-scrollbar-thumb { background: #1e2d45; border-radius: 99px; }
