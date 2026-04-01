@@ -14,13 +14,24 @@ const chatRoutes = require("./routes/chatRoutes");
 const summaryRoutes = require("./routes/summaryRoutes");
 const streakRoutes = require("./routes/streakRoutes");
 const { router: xpRoutes } = require("./routes/xpRoutes");
-const gameRoutes = require("./routes/gameRoutes")
+const gameRoutes = require("./routes/gameRoutes");
 const ragRoutes = require("./routes/ragRoutes");
+
 const app  = express();
 const PORT = process.env.PORT || 5000;
 
+const corsOptions = {
+  origin: [
+    "http://localhost:5173",
+    "https://ai-study-planner-omega-five.vercel.app",
+  ],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
 const aiRateLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
+  windowMs: 15 * 60 * 1000,
   max: 60,
   standardHeaders: true,
   legacyHeaders: false,
@@ -28,21 +39,14 @@ const aiRateLimiter = rateLimit({
 });
 
 // Middleware
-app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://ai-study-planner-omega-five.vercel.app", // your actual Vercel URL
-  ],
-  credentials: true,
-}));
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); // handles preflight requests
 app.use(express.json());
 app.use(compression());
 
 // Connect DB first, then start server + cron jobs
 connectDB().then(() => {
 
-  // Only load reminder job AFTER DB is connected
-  // (it queries the DB immediately on schedule)
   require("./jobs/reminderJob");
 
   // Routes
@@ -50,24 +54,19 @@ connectDB().then(() => {
   app.use("/api/subjects", subjectRoutes);
   app.use("/api/tasks",    taskRoutes);
   app.use("/api/ai",       aiRateLimiter, aiRoutes);
-  app.use("/api/quiz", aiRateLimiter, quizRoutes);
-  app.use("/api/chat", aiRateLimiter, chatRoutes);
-  app.use("/api/summary", aiRateLimiter, summaryRoutes);
-  app.use("/api/streak", streakRoutes);
-  app.use("/api/xp", xpRoutes);
-  app.use("/api/games", gameRoutes);
-  app.use("/api/rag", ragRoutes);
-
+  app.use("/api/quiz",     aiRateLimiter, quizRoutes);
+  app.use("/api/chat",     aiRateLimiter, chatRoutes);
+  app.use("/api/summary",  aiRateLimiter, summaryRoutes);
+  app.use("/api/streak",   streakRoutes);
+  app.use("/api/xp",       xpRoutes);
+  app.use("/api/games",    gameRoutes);
+  app.use("/api/rag",      ragRoutes);
 
   // Health check routes
   app.get("/", (req, res) => res.send("Welcome to AI Study Planner Backend 🚀"));
   app.get("/ping", (req, res) => res.json({ message: "pong" }));
 
-
-  
-
-
-  // 404 handler for unknown routes
+  // 404 handler
   app.use((req, res) => {
     res.status(404).json({ message: "Route not found" });
   });
