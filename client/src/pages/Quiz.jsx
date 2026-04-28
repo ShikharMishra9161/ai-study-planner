@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Layout from "../components/Layout";
 import API from "../utils/api";
@@ -17,10 +18,11 @@ export default function Quiz() {
   const [result, setResult]               = useState(null);
   const [pastQuizzes, setPastQuizzes]     = useState([]);
   const [loadingPast, setLoadingPast]     = useState(true);
-  
+  const navigate                          = useNavigate();
 
   useEffect(() => {
-   
+    const token = localStorage.getItem("token");
+    if (!token) { navigate("/"); return; }
     fetchSubjects();
     fetchPastQuizzes();
   }, []);
@@ -29,9 +31,7 @@ export default function Quiz() {
     try {
       const res = await API.get("/subjects");
       setSubjects(res.data);
-    } catch {
-      setSubjects([]);
-    }
+    } catch (_) {}
   };
 
   const fetchPastQuizzes = async () => {
@@ -39,9 +39,7 @@ export default function Quiz() {
     try {
       const res = await API.get("/quiz");
       setPastQuizzes(res.data);
-    } catch {
-      setPastQuizzes([]);
-    }
+    } catch (_) {}
     setLoadingPast(false);
   };
 
@@ -122,7 +120,7 @@ export default function Quiz() {
             <h3 className="font-display font-semibold text-white mb-5 flex items-center gap-2">
               <span className="gradient-text">◎</span> Generate New Quiz
             </h3>
-            <div className="grid md:grid-cols-2 gap-4 mb-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
               <div className="space-y-2">
                 <label className="label">Subject</label>
                 <select

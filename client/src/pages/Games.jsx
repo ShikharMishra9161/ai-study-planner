@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Layout from "../components/Layout";
 import API from "../utils/api";
@@ -46,7 +47,7 @@ function DailyChallenge() {
       setResult(res.data);
       setStage("result");
       if (res.data.xp) toast.success(`+${res.data.xp.pointsEarned} XP earned!`);
-    } catch {
+    } catch (err) {
       toast.error("Failed to submit");
     }
     setLoading(false);
@@ -180,7 +181,7 @@ function WordScramble({ subjects }) {
       setFeedback(null);
       setStage("playing");
       setTimeout(() => inputRef.current?.focus(), 100);
-    } catch {
+    } catch (err) {
       toast.error("Failed to generate game");
     }
     setLoading(false);
@@ -213,9 +214,7 @@ function WordScramble({ subjects }) {
           setTimeout(() => inputRef.current?.focus(), 100);
         }
       }, 1000);
-    } catch {
-      toast.error("Failed to check answer");
-    }
+    } catch (_) {}
     setChecking(false);
   };
 
@@ -349,11 +348,50 @@ function TrueFalseBlitz({ subjects }) {
   const [loading, setLoading]       = useState(false);
   const timerRef = useRef(null);
 
-  const stopTimer = useCallback(() => {
-    clearInterval(timerRef.current);
-  }, []);
+  const startTimer = () => {
+    setTimeLeft(10);
+    timerRef.current = setInterval(() => {
+      setTimeLeft(t => {
+        if (t <= 1) {
+          clearInterval(timerRef.current);
+          handleAnswer(null); // time up = wrong
+          return 0;
+        }
+        return t - 1;
+      });
+    }, 1000);
+  };
 
-  const handleAnswer = useCallback((userAnswer) => {
+  const stopTimer = () => {
+    clearInterval(timerRef.current);
+  };
+
+  useEffect(() => {
+    if (stage === "playing" && statements.length > 0 && !feedback) {
+      startTimer();
+    }
+    return () => stopTimer();
+  }, [currentIdx, stage, feedback]);
+
+  const generate = async () => {
+    setLoading(true);
+    try {
+      const res = await API.post("/games/blitz/generate", {
+        subjectId: selectedSubject || undefined,
+      });
+      setStatements(res.data.statements);
+      setCurrentIdx(0);
+      setScore(0);
+      setResults([]);
+      setFeedback(null);
+      setStage("playing");
+    } catch (err) {
+      toast.error("Failed to generate game");
+    }
+    setLoading(false);
+  };
+
+  const handleAnswer = (userAnswer) => {
     stopTimer();
     const current = statements[currentIdx];
     if (!current) return;
@@ -377,6 +415,7 @@ function TrueFalseBlitz({ subjects }) {
       setFeedback(null);
       if (currentIdx + 1 >= statements.length) {
         // Award XP
+        const percentage = Math.round(((score + (correct ? 1 : 0)) / statements.length) * 100);
         API.post("/games/blitz/complete", { score: score + (correct ? 1 : 0), total: statements.length })
           .then(res => { if (res.data.xp) toast.success(`+${res.data.xp.pointsEarned} XP!`); })
           .catch(() => {});
@@ -385,45 +424,6 @@ function TrueFalseBlitz({ subjects }) {
         setCurrentIdx(i => i + 1);
       }
     }, 1200);
-  }, [currentIdx, score, statements, stopTimer]);
-
-  const startTimer = useCallback(() => {
-    setTimeLeft(10);
-    timerRef.current = setInterval(() => {
-      setTimeLeft(t => {
-        if (t <= 1) {
-          clearInterval(timerRef.current);
-          handleAnswer(null); // time up = wrong
-          return 0;
-        }
-        return t - 1;
-      });
-    }, 1000);
-  }, [handleAnswer]);
-
-  useEffect(() => {
-    if (stage === "playing" && statements.length > 0 && !feedback) {
-      startTimer();
-    }
-    return () => stopTimer();
-  }, [currentIdx, stage, feedback, statements.length, startTimer, stopTimer]);
-
-  const generate = async () => {
-    setLoading(true);
-    try {
-      const res = await API.post("/games/blitz/generate", {
-        subjectId: selectedSubject || undefined,
-      });
-      setStatements(res.data.statements);
-      setCurrentIdx(0);
-      setScore(0);
-      setResults([]);
-      setFeedback(null);
-      setStage("playing");
-    } catch {
-      toast.error("Failed to generate game");
-    }
-    setLoading(false);
   };
 
   const current = statements[currentIdx];
@@ -554,6 +554,7 @@ function TrueFalseBlitz({ subjects }) {
 export default function Games() {
   const [activeGame, setActiveGame] = useState("daily");
   const [subjects, setSubjects]     = useState([]);
+  const navigate                    = useNavigate();
 
   useEffect(() => {
     API.get("/subjects").then(res => setSubjects(res.data)).catch(() => {});
@@ -568,7 +569,7 @@ export default function Games() {
       </div>
 
       {/* Game selector */}
-      <div className="grid grid-cols-3 gap-3 mb-8 animate-fade-up-1">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6 animate-fade-up-1">
         {GAMES.map(({ key, label, icon, desc }) => (
           <button key={key} onClick={() => setActiveGame(key)}
             className={`card p-4 text-left transition-all duration-200

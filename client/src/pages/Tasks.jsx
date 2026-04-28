@@ -18,15 +18,13 @@ export default function Tasks() {
     const token = localStorage.getItem("token");
     if (!token) { navigate("/"); return; }
     Promise.all([fetchSubjects(), fetchTasks()]);
-  }, [navigate]);
+  }, []);
 
   const fetchSubjects = async () => {
     try {
       const res = await API.get("/subjects");
       setSubjects(res.data);
-    } catch {
-      setSubjects([]);
-    }
+    } catch (_) {}
   };
 
   const fetchTasks = async () => {
@@ -34,9 +32,7 @@ export default function Tasks() {
     try {
       const res = await API.get("/tasks");
       setTasks(res.data);
-    } catch {
-      toast.error("Failed to load tasks");
-    }
+    } catch (_) { toast.error("Failed to load tasks"); }
     setLoading(false);
   };
 
@@ -72,9 +68,7 @@ export default function Tasks() {
         )
       );
       if (status === "pending") { const xp = res.data?.xp; toast.success(xp ? `Task completed! +${xp.pointsEarned} XP 🎉` : "Task completed! 🎉", { duration: 3000 }); } else { toast.success("Marked as pending"); }
-    } catch {
-      toast.error("Failed to update task");
-    }
+    } catch (_) { toast.error("Failed to update task"); }
   };
 
   const handleDelete = async (id) => {
@@ -82,9 +76,7 @@ export default function Tasks() {
       await API.delete(`/tasks/${id}`);
       setTasks((prev) => prev.filter((t) => t._id !== id));
       toast.success("Task deleted");
-    } catch {
-      toast.error("Failed to delete task");
-    }
+    } catch (_) { toast.error("Failed to delete task"); }
   };
 
   const done    = tasks.filter((t) => t.status === "done").length;
@@ -116,11 +108,11 @@ export default function Tasks() {
         <h3 className="font-display font-semibold text-white mb-4 flex items-center gap-2">
           <span className="gradient-text">✦</span> Generate AI Tasks
         </h3>
-        <div className="flex gap-3 flex-wrap">
+        <div className="flex gap-2 flex-wrap">
           <select
             value={selectedSubject}
             onChange={(e) => setSelectedSubject(e.target.value)}
-            className="input-field flex-1 min-w-[200px]"
+            className="input-field flex-1 min-w-0"
           >
             <option value="">Select a subject…</option>
             {subjects.map((s) => (

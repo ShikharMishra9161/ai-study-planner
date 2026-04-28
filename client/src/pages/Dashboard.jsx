@@ -64,11 +64,7 @@ export default function Dashboard() {
       setSubjects(sRes.data);
       setTasks(tRes.data);
       setQuizzes(qRes.data);
-    } catch {
-      setSubjects([]);
-      setTasks([]);
-      setQuizzes([]);
-    }
+    } catch (_) {}
     setLoading(false);
   };
 
@@ -120,7 +116,7 @@ export default function Dashboard() {
         <div className="flex items-center justify-between relative z-10">
           <div>
             <p className="text-slate-500 text-sm mb-1">{greeting} 👋</p>
-            <h2 className="font-display font-bold text-4xl text-white tracking-tight mb-2">
+            <h2 className="font-display font-bold text-2xl sm:text-4xl text-white tracking-tight mb-2">
               {user?.name || "Student"}
             </h2>
             <p className="text-slate-500 text-sm">Here's your full study analytics.</p>
@@ -168,7 +164,7 @@ export default function Dashboard() {
       </div>
 
       {/* ── Stat Cards ────────────────────────────────────────────── */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         <StatCard label="Subjects"    value={subjects.length}   icon="◈" color="border-t-cyan-500"    delay="0.05s" />
         <StatCard label="Completed"   value={done}              icon="✓" color="border-t-emerald-500"  delay="0.1s"  sub={`${pct}% completion`} />
         <StatCard label="Pending"     value={pending}           icon="◷" color="border-t-amber-500"   delay="0.15s" />
@@ -181,7 +177,7 @@ export default function Dashboard() {
       </div>
 
       {/* ── Charts Row 1 ──────────────────────────────────────────── */}
-      <div className="grid md:grid-cols-3 gap-6 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
 
         {/* Tasks per subject bar chart */}
         <div className="md:col-span-2 card p-6 animate-fade-up-2">
@@ -271,7 +267,7 @@ export default function Dashboard() {
       </div>
 
       {/* ── Charts Row 2 ──────────────────────────────────────────── */}
-      <div className="grid md:grid-cols-3 gap-6 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
 
         {/* Quiz score history */}
         <div className="md:col-span-2 card p-6 animate-fade-up-3">
@@ -404,7 +400,7 @@ export default function Dashboard() {
             { to: "/subjects", icon: "◈", label: "Manage Subjects", sub: "Add chapters & topics",     color: "hover:border-cyan-500/40",   iconBg: "bg-cyan-400/10 text-cyan-400"    },
             { to: "/tasks",    icon: "◎", label: "AI Tasks",        sub: "Generate study tasks",      color: "hover:border-violet-500/40", iconBg: "bg-violet-400/10 text-violet-400" },
             { to: "/quiz",     icon: "?", label: "Take a Quiz",      sub: "Test your knowledge",       color: "hover:border-emerald-500/40",iconBg: "bg-emerald-400/10 text-emerald-400"},
-            { to: "/ai-assistant", icon: "✦", label: "AI Assistant", sub: "Chat, PDF & summaries",     color: "hover:border-amber-500/40",  iconBg: "bg-amber-400/10 text-amber-400"  },
+            { to: "/chat",     icon: "✦", label: "AI Chat",         sub: "Ask your study assistant",  color: "hover:border-amber-500/40",  iconBg: "bg-amber-400/10 text-amber-400"  },
           ].map(({ to, icon, label, sub, color, iconBg }) => (
             <Link key={to} to={to}
               className={`card p-4 flex items-center gap-3 ${color} transition-all duration-200 group block no-underline`}>

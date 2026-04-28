@@ -185,3 +185,48 @@
 main {
   animation: pageEnter 0.25s ease both;
 }
+
+/* ── Mobile responsive utilities ────────────────────────────────────── */
+
+/* Prevent horizontal scroll on mobile */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Better touch targets on mobile */
+@media (max-width: 640px) {
+  .btn-primary {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.875rem;
+  }
+
+  .btn-ghost {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .input-field {
+    font-size: 16px; /* prevents iOS zoom on focus */
+  }
+
+  .card {
+    border-radius: 0.875rem;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+}
+
+/* Hide scrollbar on mobile nav */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── Safe area for notched phones ───────────────────────────────────── */
+@supports (padding: max(0px)) {
+  nav {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+}

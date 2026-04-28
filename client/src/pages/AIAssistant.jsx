@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Layout from "../components/Layout";
 import API from "../utils/api";
@@ -89,7 +90,7 @@ function ChatTab() {
         if (a.tool === "mark_tasks_complete")   toast.success(`${a.result.markedDone} tasks marked done!`);
         if (a.tool === "clear_completed_tasks") toast.success(`${a.result.deleted} tasks cleared!`);
       });
-    } catch {
+    } catch (err) {
       toast.error("Failed to get response");
       setMessages(prev => prev.slice(0, -1));
       setInput(msg);
@@ -381,7 +382,7 @@ const SUMMARY_TABS = [
   { key: "questions",  label: "Practice Q", icon: "?" },
 ];
 
-function Flashcard({ front, back }) {
+function Flashcard({ front, back, index }) {
   const [flipped, setFlipped] = useState(false);
   return (
     <div onClick={() => setFlipped(!flipped)} className="cursor-pointer" style={{ perspective: "1000px" }}>
@@ -433,7 +434,7 @@ function SummaryTab() {
   return (
     <div className="flex flex-col h-full overflow-y-auto p-4 space-y-4">
       {/* Input area */}
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-3">
           <select value={selectedSubject} onChange={e => setSelectedSubject(e.target.value)} className="input-field text-sm">
             <option value="">No subject</option>
@@ -506,7 +507,7 @@ function SummaryTab() {
               )}
               {activeTab === "flashcards" && (
                 <div className="grid grid-cols-1 gap-2">
-                  {result.flashcards?.map((c, i) => <Flashcard key={i} front={c.front} back={c.back} />)}
+                  {result.flashcards?.map((c, i) => <Flashcard key={i} index={i} front={c.front} back={c.back} />)}
                 </div>
               )}
               {activeTab === "questions" && (
@@ -541,7 +542,7 @@ export default function AIAssistant() {
         <p className="page-subtitle">Your complete AI study toolkit — chat, PDF analysis, and note summarization</p>
       </div>
 
-      <div className="card animate-fade-up-1 flex flex-col" style={{ height: "calc(100vh - 240px)", minHeight: "560px" }}>
+      <div className="card animate-fade-up-1 flex flex-col" style={{ height: "calc(100vh - 200px)", minHeight: "480px" }}>
 
         {/* Tab bar */}
         <div className="flex border-b border-slate-800/60 flex-shrink-0">

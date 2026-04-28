@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Layout from "../components/Layout";
 import API from "../utils/api";
@@ -29,7 +30,7 @@ export default function Subjects() {
     try {
       const res = await API.get("/subjects");
       setSubjects(res.data);
-    } catch { toast.error("Failed to load subjects"); }
+    } catch (_) { toast.error("Failed to load subjects"); }
     setLoading(false);
   };
 
@@ -48,7 +49,7 @@ export default function Subjects() {
       setSubject("");
       setChapters("");
       fetchSubjects();
-    } catch {
+    } catch (_) {
       toast.error("Error creating subject");
     }
     setCreating(false);
@@ -63,7 +64,7 @@ export default function Subjects() {
       await API.delete(`/subjects/${id}`);
       setSubjects((prev) => prev.filter((s) => s._id !== id));
       toast.success(`"${name}" deleted`);
-    } catch {
+    } catch (_) {
       toast.error("Error deleting subject");
     }
     setDeletingId(null);
@@ -82,7 +83,7 @@ export default function Subjects() {
         <h3 className="font-display font-semibold text-white mb-5 flex items-center gap-2">
           <span className="gradient-text">+</span> Add New Subject
         </h3>
-        <div className="grid md:grid-cols-2 gap-4 mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           <div className="space-y-2">
             <label className="label">Subject Name</label>
             <input
@@ -124,7 +125,7 @@ export default function Subjects() {
 
       {/* Subjects grid */}
       {loading ? (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[1, 2, 3].map(i => (
             <div key={i} className="skeleton h-40 w-full rounded-2xl" />
           ))}
@@ -135,7 +136,7 @@ export default function Subjects() {
           <p className="text-slate-500 text-sm">No subjects yet. Add one above to get started.</p>
         </div>
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {subjects.map((s, i) => {
             const accent = ACCENTS[i % ACCENTS.length];
             const isDeleting = deletingId === s._id;

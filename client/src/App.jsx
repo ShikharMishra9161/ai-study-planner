@@ -10,6 +10,7 @@ import Quiz         from "./pages/Quiz";
 import AIAssistant  from "./pages/AIAssistant";
 import Leaderboard  from "./pages/Leaderboard";
 import Games        from "./pages/Games";
+import Profile      from "./pages/Profile";
 import "./index.css";
 
 function App() {
@@ -37,10 +38,10 @@ function App() {
         <Route path="/subjects"     element={<ProtectedRoute><Subjects /></ProtectedRoute>} />
         <Route path="/tasks"        element={<ProtectedRoute><Tasks /></ProtectedRoute>} />
         <Route path="/quiz"         element={<ProtectedRoute><Quiz /></ProtectedRoute>} />
-        {/* AI toolkit (replaces separate Chat / Summary / AskNotes pages) */}
         <Route path="/ai-assistant" element={<ProtectedRoute><AIAssistant /></ProtectedRoute>} />
         <Route path="/leaderboard"  element={<ProtectedRoute><Leaderboard /></ProtectedRoute>} />
         <Route path="/games"        element={<ProtectedRoute><Games /></ProtectedRoute>} />
+        <Route path="/profile"      element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       </Routes>
     </Router>
   );
