@@ -16,6 +16,8 @@ const streakRoutes  = require("./routes/streakRoutes");
 const { router: xpRoutes } = require("./routes/xpRoutes");
 const gameRoutes    = require("./routes/gameRoutes");
 const ragRoutes     = require("./routes/ragRoutes");
+const profileRoutes = require("./routes/profileRoutes");
+
 
 const app  = express();
 const PORT = process.env.PORT || 5000;
@@ -57,7 +59,7 @@ app.use("/api/streak",   streakRoutes);
 app.use("/api/xp",       xpRoutes);
 app.use("/api/games",    gameRoutes);
 app.use("/api/rag",      ragRoutes);
-
+app.use("/api/profile",  profileRoutes);
 app.get("/", (req, res) => res.send("Welcome to AI Study Planner Backend 🚀"));
 app.get("/ping", (req, res) => res.json({ message: "pong" }));
 
