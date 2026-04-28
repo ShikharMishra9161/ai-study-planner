@@ -110,10 +110,10 @@ export default function Dashboard() {
     <Layout>
 
       {/* ── Hero ──────────────────────────────────────────────────── */}
-      <div className="card p-8 mb-6 relative overflow-hidden animate-fade-up">
+      <div className="card p-5 sm:p-8 mb-6 relative overflow-hidden animate-fade-up">
         <div className="absolute top-0 right-0 w-72 h-72 rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none"
           style={{ background: "radial-gradient(circle, rgba(34,211,238,0.07) 0%, transparent 70%)" }} />
-        <div className="flex items-center justify-between relative z-10">
+        <div className="flex items-start sm:items-center justify-between relative z-10 gap-4">
           <div>
             <p className="text-slate-500 text-sm mb-1">{greeting} 👋</p>
             <h2 className="font-display font-bold text-2xl sm:text-4xl text-white tracking-tight mb-2">
@@ -354,7 +354,7 @@ export default function Dashboard() {
       </div>
 
       {/* ── Bottom Row ────────────────────────────────────────────── */}
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
         {/* Recent tasks */}
         <div className="md:col-span-2 card p-6 animate-fade-up-4">
