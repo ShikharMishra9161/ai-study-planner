@@ -435,7 +435,7 @@ EXAMPLE FLOWS:
 
     for (let iteration = 0; iteration < 8; iteration++) {
       const response = await genAI.models.generateContent({
-        model:    "gemini-2.5-flash",
+        model:    "-2.5-flashgemini",
         contents: loopContents,
         tools:    TOOLS,
       });
