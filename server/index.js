@@ -4,6 +4,7 @@ const compression = require("compression");
 const rateLimit = require("express-rate-limit");
 require("dotenv").config();
 const connectDB = require("./config/db");
+const helmet = require("helmet");
 
 const authRoutes    = require("./routes/authRoutes");
 const subjectRoutes = require("./routes/subjectRoutes");
@@ -38,6 +39,8 @@ app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));
 app.use(express.json());
 app.use(compression());
+app.use(helmet());
+
 
 const aiRateLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,

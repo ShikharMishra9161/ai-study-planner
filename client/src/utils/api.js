@@ -10,4 +10,8 @@ API.interceptors.request.use((req) => {
   return req;
 });
 
+setInterval(() => {
+  API.get("/ping").catch(() => {});
+}, 14 * 60 * 1000);
+
 export default API;

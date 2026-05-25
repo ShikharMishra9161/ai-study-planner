@@ -54,19 +54,17 @@ export default function Dashboard() {
     fetchData();
   }, [navigate]);
 
-  const fetchData = async () => {
-    try {
-      const [sRes, tRes, qRes] = await Promise.all([
-        API.get("/subjects"),
-        API.get("/tasks"),
-        API.get("/quiz"),
-      ]);
-      setSubjects(sRes.data);
-      setTasks(tRes.data);
-      setQuizzes(qRes.data);
-    } catch (_) {}
-    setLoading(false);
-  };
+ const fetchData = async () => {
+  const [sRes, tRes, qRes] = await Promise.allSettled([
+    API.get("/subjects"),
+    API.get("/tasks"),
+    API.get("/quiz"),
+  ]);
+  if (sRes.status === "fulfilled") setSubjects(sRes.value.data);
+  if (tRes.status === "fulfilled") setTasks(tRes.value.data);
+  if (qRes.status === "fulfilled") setQuizzes(qRes.value.data);
+  setLoading(false);
+};
 
   // ── Computed stats ───────────────────────────────────────────────────
   const done    = tasks.filter((t) => t.status === "done").length;

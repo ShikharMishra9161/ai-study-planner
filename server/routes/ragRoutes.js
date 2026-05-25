@@ -46,10 +46,12 @@ router.post("/upload", auth, upload.single("pdf"), async (req, res) => {
       extractionMethod = "ocr";
       console.log(`🔍 Running OCR on ${req.file.originalname}…`);
 
-      const ocrResult = await extractTextFromImage(
-        req.file.buffer,
-        req.file.mimetype
-      );
+     const ocrResult = await Promise.race([
+  extractTextFromImage(req.file.buffer, req.file.mimetype),
+  new Promise((_, reject) =>
+    setTimeout(() => reject(new Error("OCR timeout — image too large or complex")), 30000)
+  ),
+]);
 
       if (!ocrResult.text || ocrResult.text.length < 50) {
         return res.status(400).json({
