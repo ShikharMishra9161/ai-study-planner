@@ -390,9 +390,4 @@ MIT License — see [LICENSE](LICENSE) for details.
   <p>Built with ❤️ using React, Node.js, and Google Gemini</p>
   <p>⭐ Star this repo if you found it helpful!</p>
 </div>
-READMEEOF
-echo "done"
-Output
 
-done
-Done
