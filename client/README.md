@@ -1,4 +1,4 @@
-cat > /mnt/user-data/outputs/README.md << 'READMEEOF'
+
 
 # 🎓 StudyAI — AI-Powered Study Planner
 
