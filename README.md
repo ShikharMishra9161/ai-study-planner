@@ -19,7 +19,11 @@
 
 ## 📸 Screenshots
 
-> Dashboard · AI Assistant · Games · Leaderboard
+> <img width="1859" height="873" alt="image" src="https://github.com/user-attachments/assets/52f9eee3-1c8d-42b0-a0bd-69ca374ab2fc" />
+ · <img width="1843" height="751" alt="image" src="https://github.com/user-attachments/assets/2f3cadb5-0b63-439d-8490-4c3139f0d59b" />
+ · <img width="1821" height="865" alt="image" src="https://github.com/user-attachments/assets/93cbbda4-13f5-48a3-a8b9-af59dc896831" />
+ · <img width="1773" height="832" alt="image" src="https://github.com/user-attachments/assets/a0a40130-03da-46fc-8689-d76a0fc9b9a2" />
+
 
 ---
 
