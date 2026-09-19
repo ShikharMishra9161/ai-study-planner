@@ -1,17 +1,37 @@
 import { useEffect, useState } from "react";
+import { CircleHelp, Diamond, Sparkles, Trophy } from "lucide-react";
 import Layout from "../components/Layout";
 import API from "../utils/api";
 
 const RANK_STYLES = {
-  1: { bg: "bg-amber-400/15",   text: "text-amber-400",   border: "border-amber-400/30",   badge: "🥇" },
-  2: { bg: "bg-slate-400/15",   text: "text-slate-400",   border: "border-slate-400/30",   badge: "🥈" },
-  3: { bg: "bg-orange-400/15",  text: "text-orange-400",  border: "border-orange-400/30",  badge: "🥉" },
+  1: {
+    bg: "bg-amber-400/15",
+    text: "text-amber-400",
+    border: "border-amber-400/30",
+    badge: "1",
+  },
+  2: {
+    bg: "bg-slate-400/15",
+    text: "text-slate-400",
+    border: "border-slate-400/30",
+    badge: "2",
+  },
+  3: {
+    bg: "bg-orange-400/15",
+    text: "text-orange-400",
+    border: "border-orange-400/30",
+    badge: "3",
+  },
 };
+
+function CheckIcon() {
+  return <span className="inline-flex h-3.5 w-3.5 text-emerald-400">✓</span>;
+}
 
 export default function Leaderboard() {
   const [leaderboard, setLeaderboard] = useState([]);
-  const [myXP, setMyXP]               = useState(null);
-  const [loading, setLoading]         = useState(true);
+  const [myXP, setMyXP] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchData();
@@ -42,7 +62,6 @@ export default function Leaderboard() {
       </div>
 
       <div className="grid md:grid-cols-3 gap-6">
-
         {/* ── My Stats ────────────────────────────────────────────── */}
         <div className="space-y-4 animate-fade-up-1">
           <h3 className="font-display font-semibold text-white">My Progress</h3>
@@ -51,9 +70,15 @@ export default function Leaderboard() {
             <>
               {/* Level card */}
               <div className="card p-6 text-center">
-                <p className="text-5xl mb-3">{myXP.icon}</p>
-                <p className="font-display font-bold text-2xl text-white mb-1">{myXP.title}</p>
-                <p className="text-slate-500 text-sm mb-4">Level {myXP.level}</p>
+                <p className="text-5xl mb-3">
+                  <Trophy className="h-12 w-12 mx-auto text-cyan-400" />
+                </p>
+                <p className="font-display font-bold text-2xl text-white mb-1">
+                  {myXP.title}
+                </p>
+                <p className="text-slate-500 text-sm mb-4">
+                  Level {myXP.level}
+                </p>
 
                 {/* XP bar */}
                 <div className="mb-2">
@@ -71,25 +96,40 @@ export default function Leaderboard() {
                     />
                   </div>
                 </div>
-                <p className="text-xs text-slate-500">{myXP.progressPct}% to {myXP.nextLevel || "Max Level"}</p>
+                <p className="text-xs text-slate-500">
+                  {myXP.progressPct}% to {myXP.nextLevel || "Max Level"}
+                </p>
 
                 <div className="mt-4 pt-4 border-t border-slate-800">
-                  <p className="font-display font-bold text-3xl gradient-text">{myXP.totalXP}</p>
+                  <p className="font-display font-bold text-3xl gradient-text">
+                    {myXP.totalXP}
+                  </p>
                   <p className="text-xs text-slate-500 mt-1">Total XP earned</p>
                 </div>
               </div>
 
               {/* XP history */}
               <div className="card p-5">
-                <h4 className="font-display font-semibold text-white mb-4 text-sm">Recent XP</h4>
+                <h4 className="font-display font-semibold text-white mb-4 text-sm">
+                  Recent XP
+                </h4>
                 {myXP.history?.length === 0 ? (
-                  <p className="text-slate-500 text-xs">No XP earned yet. Complete tasks to start!</p>
+                  <p className="text-slate-500 text-xs">
+                    No XP earned yet. Complete tasks to start!
+                  </p>
                 ) : (
                   <div className="space-y-2">
                     {myXP.history?.map((h, i) => (
-                      <div key={i} className="flex items-center justify-between text-xs">
-                        <span className="text-slate-400">{h.message.split("+")[0].trim()}</span>
-                        <span className="text-cyan-400 font-bold">+{h.points} XP</span>
+                      <div
+                        key={i}
+                        className="flex items-center justify-between text-xs"
+                      >
+                        <span className="text-slate-400">
+                          {h.message.split("+")[0].trim()}
+                        </span>
+                        <span className="text-cyan-400 font-bold">
+                          +{h.points} XP
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -100,18 +140,51 @@ export default function Leaderboard() {
 
           {/* XP Guide */}
           <div className="card p-5">
-            <h4 className="font-display font-semibold text-white mb-4 text-sm">How to earn XP</h4>
+            <h4 className="font-display font-semibold text-white mb-4 text-sm">
+              How to earn XP
+            </h4>
             <div className="space-y-2">
               {[
-                { action: "Complete a task",    xp: "+10 XP",  icon: "✓" },
-                { action: "Generate AI tasks",  xp: "+15 XP",  icon: "✦" },
-                { action: "Summarize notes",    xp: "+20 XP",  icon: "◈" },
-                { action: "Attempt a quiz",     xp: "+20 XP",  icon: "?" },
-                { action: "Pass a quiz (≥70%)", xp: "+50 XP",  icon: "🏆" },
-                { action: "Use AI chat",        xp: "+5 XP",   icon: "💬" },
-                { action: "7-day streak",       xp: "+100 XP", icon: "🔥" },
+                {
+                  action: "Complete a task",
+                  xp: "+10 XP",
+                  icon: <CheckIcon />,
+                },
+                {
+                  action: "Generate AI tasks",
+                  xp: "+15 XP",
+                  icon: <Sparkles className="h-3.5 w-3.5" />,
+                },
+                {
+                  action: "Summarize notes",
+                  xp: "+20 XP",
+                  icon: <Diamond className="h-3.5 w-3.5" />,
+                },
+                {
+                  action: "Attempt a quiz",
+                  xp: "+20 XP",
+                  icon: <CircleHelp className="h-3.5 w-3.5" />,
+                },
+                {
+                  action: "Pass a quiz (≥70%)",
+                  xp: "+50 XP",
+                  icon: <Trophy className="h-3.5 w-3.5" />,
+                },
+                {
+                  action: "Use AI chat",
+                  xp: "+5 XP",
+                  icon: <Sparkles className="h-3.5 w-3.5" />,
+                },
+                {
+                  action: "7-day streak",
+                  xp: "+100 XP",
+                  icon: <Sparkles className="h-3.5 w-3.5" />,
+                },
               ].map((item, i) => (
-                <div key={i} className="flex items-center justify-between text-xs">
+                <div
+                  key={i}
+                  className="flex items-center justify-between text-xs"
+                >
                   <span className="flex items-center gap-2 text-slate-400">
                     <span className="text-slate-600">{item.icon}</span>
                     {item.action}
@@ -126,7 +199,9 @@ export default function Leaderboard() {
         {/* ── Leaderboard ──────────────────────────────────────────── */}
         <div className="md:col-span-2 animate-fade-up-2">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-display font-semibold text-white">Top Students</h3>
+            <h3 className="font-display font-semibold text-white">
+              Top Students
+            </h3>
             <span className="text-xs text-slate-500 bg-slate-800/60 px-3 py-1 rounded-full">
               {leaderboard.length} students
             </span>
@@ -134,12 +209,16 @@ export default function Leaderboard() {
 
           {loading ? (
             <div className="space-y-3">
-              {[1,2,3,4,5].map(i => <div key={i} className="skeleton h-16 rounded-xl" />)}
+              {[1, 2, 3, 4, 5].map((i) => (
+                <div key={i} className="skeleton h-16 rounded-xl" />
+              ))}
             </div>
           ) : leaderboard.length === 0 ? (
             <div className="card p-12 text-center border-dashed">
               <p className="text-3xl text-slate-700 mb-2">🏆</p>
-              <p className="text-slate-500 text-sm">No students on the leaderboard yet.</p>
+              <p className="text-slate-500 text-sm">
+                No students on the leaderboard yet.
+              </p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -154,8 +233,12 @@ export default function Leaderboard() {
                     style={{ animationDelay: `${i * 0.05}s` }}
                   >
                     {/* Rank */}
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-display font-bold text-sm flex-shrink-0
-                      ${rankStyle.bg || "bg-slate-800"} ${rankStyle.border ? `border ${rankStyle.border}` : ""}`}>
+                    <div
+                      className={`w-10 h-10 rounded-xl flex items-center justify-center font-display font-bold text-sm flex-shrink-0
+                      ${rankStyle.bg || "bg-slate-800"} ${
+                        rankStyle.border ? `border ${rankStyle.border}` : ""
+                      }`}
+                    >
                       {rankStyle.badge || (
                         <span className={rankStyle.text || "text-slate-400"}>
                           #{student.rank}
@@ -166,9 +249,17 @@ export default function Leaderboard() {
                     {/* Info */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <p className={`font-semibold text-sm truncate ${student.isMe ? "text-cyan-400" : "text-white"}`}>
+                        <p
+                          className={`font-semibold text-sm truncate ${
+                            student.isMe ? "text-cyan-400" : "text-white"
+                          }`}
+                        >
                           {student.name}
-                          {student.isMe && <span className="text-xs text-cyan-400 ml-1">(you)</span>}
+                          {student.isMe && (
+                            <span className="text-xs text-cyan-400 ml-1">
+                              (you)
+                            </span>
+                          )}
                         </p>
                         <span className="text-xs">{student.icon}</span>
                       </div>
@@ -179,7 +270,9 @@ export default function Leaderboard() {
 
                     {/* XP */}
                     <div className="text-right flex-shrink-0">
-                      <p className="font-display font-bold text-white">{student.totalXP.toLocaleString()}</p>
+                      <p className="font-display font-bold text-white">
+                        {student.totalXP.toLocaleString()}
+                      </p>
                       <p className="text-xs text-slate-500">XP</p>
                     </div>
                   </div>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { Mail, Lock, Sparkles, ArrowRight } from "lucide-react";
 import toast from "react-hot-toast";
 import API from "../utils/api";
 
@@ -14,7 +15,7 @@ export default function Login() {
     try {
       const res = await API.post("/auth/login", form);
       localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
+      localStorage.setItem("user",  JSON.stringify(res.data.user));
       toast.success(`Welcome back, ${res.data.user.name}!`);
       navigate("/dashboard");
     } catch (err) {
@@ -25,66 +26,77 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-[#060910] flex items-center justify-center px-4 relative overflow-hidden">
+    <div className="min-h-screen bg-[#060910] flex items-center justify-center px-4 py-8">
 
-      {/* Background glows */}
-      <div className="absolute top-[-200px] right-[-200px] w-[600px] h-[600px] rounded-full bg-gradient-radial from-cyan-500/6 to-transparent pointer-events-none" />
-      <div className="absolute bottom-[-200px] left-[-200px] w-[500px] h-[500px] rounded-full bg-gradient-radial from-violet-500/6 to-transparent pointer-events-none" />
+      {/* Subtle background */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(6,182,212,0.06),transparent_60%)] pointer-events-none" />
 
-      {/* Grid pattern */}
-      <div className="absolute inset-0 grid-bg pointer-events-none" />
+      <div className="w-full max-w-sm relative z-10">
 
-      <div className="card w-full max-w-md p-8 relative z-10 animate-fade-up glow-cyan">
-
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="text-4xl text-cyan-400 mb-4">⬡</div>
-          <h1 className="font-display font-bold text-3xl text-white tracking-tight mb-2">
-            Welcome back
-          </h1>
-          <p className="text-slate-500 text-sm">
-            Sign in to your <span className="gradient-text font-semibold">StudyAI</span> account
-          </p>
+        {/* Logo */}
+        <div className="flex items-center gap-2 justify-center mb-8">
+          <div className="w-8 h-8 rounded-lg bg-cyan-500 flex items-center justify-center">
+            <Sparkles size={16} className="text-white" />
+          </div>
+          <span className="font-display font-bold text-lg text-white">StudyAI</span>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div className="space-y-2">
-            <label className="label">Email</label>
-            <input
-              type="email"
-              placeholder="you@example.com"
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="input-field"
-              required
-            />
-          </div>
+        {/* Card */}
+        <div className="bg-[#0d1117] border border-slate-800 rounded-2xl p-8">
+          <h1 className="font-display font-bold text-2xl text-white mb-1">Welcome back</h1>
+          <p className="text-slate-500 text-sm mb-7">Sign in to continue studying</p>
 
-          <div className="space-y-2">
-            <label className="label">Password</label>
-            <input
-              type="password"
-              placeholder="••••••••"
-              value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-              className="input-field"
-              required
-            />
-          </div>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-400 uppercase tracking-wider">Email</label>
+              <div className="relative">
+                <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                <input
+                  type="email"
+                  placeholder="you@example.com"
+                  value={form.email}
+                  onChange={e => setForm({ ...form, email: e.target.value })}
+                  className="input-field pl-9 text-sm"
+                  required
+                />
+              </div>
+            </div>
 
-          <button type="submit" className="btn-primary w-full mt-2" disabled={loading}>
-            {loading ? <span className="spinner" /> : null}
-            {loading ? "Signing in…" : "Sign in →"}
-          </button>
-        </form>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-slate-400 uppercase tracking-wider">Password</label>
+              <div className="relative">
+                <Lock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+                <input
+                  type="password"
+                  placeholder="••••••••"
+                  value={form.password}
+                  onChange={e => setForm({ ...form, password: e.target.value })}
+                  className="input-field pl-9 text-sm"
+                  required
+                />
+              </div>
+            </div>
 
-        <p className="text-center mt-6 text-slate-500 text-sm">
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full mt-2 bg-cyan-500 hover:bg-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold text-sm py-2.5 px-4 rounded-xl transition-colors duration-150 flex items-center justify-center gap-2"
+            >
+              {loading ? (
+                <span className="spinner" style={{ borderTopColor: "white", borderColor: "rgba(255,255,255,0.3)" }} />
+              ) : (
+                <>Sign in <ArrowRight size={14} /></>
+              )}
+            </button>
+          </form>
+        </div>
+
+        <p className="text-center mt-5 text-slate-500 text-sm">
           Don't have an account?{" "}
-          <Link to="/signup" className="text-cyan-400 hover:text-cyan-300 font-semibold transition-colors">
+          <Link to="/signup" className="text-cyan-400 hover:text-cyan-300 font-medium transition-colors no-underline">
             Create one
           </Link>
         </p>
-
       </div>
     </div>
   );

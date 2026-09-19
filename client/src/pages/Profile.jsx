@@ -5,15 +5,15 @@ import Layout from "../components/Layout";
 import API from "../utils/api";
 
 export default function Profile() {
-  const [user, setUser]           = useState(null);
-  const [name, setName]           = useState("");
-  const [email, setEmail]         = useState("");
+  const [user, setUser] = useState(null);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword]         = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [savingProfile, setSavingProfile]     = useState(false);
-  const [savingPassword, setSavingPassword]   = useState(false);
-  const navigate                  = useNavigate();
+  const [savingProfile, setSavingProfile] = useState(false);
+  const [savingPassword, setSavingPassword] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchProfile();
@@ -32,14 +32,21 @@ export default function Profile() {
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
-    if (!name.trim()) { toast.error("Name cannot be empty"); return; }
+    if (!name.trim()) {
+      toast.error("Name cannot be empty");
+      return;
+    }
     setSavingProfile(true);
     try {
       const res = await API.put("/profile", { name, email });
 
       // ✅ Update localStorage so navbar and dashboard reflect new name instantly
       const stored = JSON.parse(localStorage.getItem("user") || "{}");
-      const updated = { ...stored, name: res.data.user.name, email: res.data.user.email };
+      const updated = {
+        ...stored,
+        name: res.data.user.name,
+        email: res.data.user.email,
+      };
       localStorage.setItem("user", JSON.stringify(updated));
 
       setUser(res.data.user);
@@ -76,13 +83,14 @@ export default function Profile() {
     setSavingPassword(false);
   };
 
-  if (!user) return (
-    <Layout>
-      <div className="flex items-center justify-center h-64">
-        <div className="skeleton w-64 h-8 rounded-xl" />
-      </div>
-    </Layout>
-  );
+  if (!user)
+    return (
+      <Layout>
+        <div className="flex items-center justify-center h-64">
+          <div className="skeleton w-64 h-8 rounded-xl" />
+        </div>
+      </Layout>
+    );
 
   return (
     <Layout>
@@ -92,19 +100,21 @@ export default function Profile() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
         {/* ── Avatar card ────────────────────────────────────────── */}
         <div className="card p-6 text-center animate-fade-up-1">
-          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-cyan-400 to-violet-500 flex items-center justify-center text-3xl font-bold text-gray-950 font-display mx-auto mb-4">
+          <div className="w-20 h-20 rounded-full bg-cyan-500 flex items-center justify-center text-3xl font-bold text-gray-950 font-display mx-auto mb-4">
             {user.name[0].toUpperCase()}
           </div>
-          <h3 className="font-display font-bold text-xl text-white mb-1">{user.name}</h3>
+          <h3 className="font-display font-bold text-xl text-white mb-1">
+            {user.name}
+          </h3>
           <p className="text-slate-500 text-sm mb-4">{user.email}</p>
           <div className="border-t border-slate-800 pt-4">
             <p className="text-xs text-slate-600">Member since</p>
             <p className="text-sm text-slate-400 font-medium mt-1">
               {new Date(user.createdAt).toLocaleDateString("en", {
-                month: "long", year: "numeric"
+                month: "long",
+                year: "numeric",
               })}
             </p>
           </div>
@@ -112,7 +122,6 @@ export default function Profile() {
 
         {/* ── Edit forms ─────────────────────────────────────────── */}
         <div className="md:col-span-2 space-y-6 animate-fade-up-2">
-
           {/* Update profile */}
           <div className="card p-6">
             <h3 className="font-display font-semibold text-white mb-5">
@@ -124,7 +133,7 @@ export default function Profile() {
                 <input
                   type="text"
                   value={name}
-                  onChange={e => setName(e.target.value)}
+                  onChange={(e) => setName(e.target.value)}
                   className="input-field"
                   placeholder="Your name"
                   required
@@ -135,7 +144,7 @@ export default function Profile() {
                 <input
                   type="email"
                   value={email}
-                  onChange={e => setEmail(e.target.value)}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="input-field"
                   placeholder="your@email.com"
                 />
@@ -162,7 +171,7 @@ export default function Profile() {
                 <input
                   type="password"
                   value={currentPassword}
-                  onChange={e => setCurrentPassword(e.target.value)}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
                   className="input-field"
                   placeholder="••••••••"
                   required
@@ -173,7 +182,7 @@ export default function Profile() {
                 <input
                   type="password"
                   value={newPassword}
-                  onChange={e => setNewPassword(e.target.value)}
+                  onChange={(e) => setNewPassword(e.target.value)}
                   className="input-field"
                   placeholder="Min. 6 characters"
                   required
@@ -184,7 +193,7 @@ export default function Profile() {
                 <input
                   type="password"
                   value={confirmPassword}
-                  onChange={e => setConfirmPassword(e.target.value)}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   className={`input-field ${
                     confirmPassword && confirmPassword !== newPassword
                       ? "border-rose-500/50"
@@ -212,7 +221,6 @@ export default function Profile() {
               </button>
             </form>
           </div>
-
         </div>
       </div>
     </Layout>
