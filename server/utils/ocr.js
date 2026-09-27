@@ -19,7 +19,7 @@ async function preprocessImage(buffer) {
  * Extract text from image buffer using Tesseract
  * Supports: JPG, PNG, WEBP, BMP, TIFF
  */
-async function extractTextFromImage(buffer, mimetype) {
+async function extractTextFromImage(buffer, _mimetype) {
   try {
     // Preprocess for better accuracy
     const processed = await preprocessImage(buffer);
@@ -45,7 +45,8 @@ async function extractTextFromImage(buffer, mimetype) {
     };
 
   } catch (error) {
-    throw new Error(`OCR failed: ${error.message}`);
+    const err = error instanceof Error ? error : new Error(String(error));
+    throw new Error(`OCR failed: ${err.message}`, { cause: err });
   }
 }
 

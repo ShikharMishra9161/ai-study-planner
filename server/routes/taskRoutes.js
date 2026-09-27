@@ -53,7 +53,7 @@ Return ONLY a plain numbered list, no markdown.`;
 
     const taskList = response.text
       .split("\n")
-      .map(l => l.replace(/^[\s\*\-\#]+/, "").replace(/^\d+\.\s*/, "").replace(/\*\*/g, "").trim())
+      .map(l => l.replace(/^[\s*\-#]+/, "").replace(/^\d+\.\s*/, "").replace(/\*\*/g, "").trim())
       .filter(l => l.length > 5)
       .slice(0, 10);
 

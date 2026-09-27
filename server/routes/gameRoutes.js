@@ -186,7 +186,7 @@ Rules:
 
     // Store answers temporarily (send without answers to frontend)
     res.json({
-      words: gameWords.map(({ answer, ...rest }) => rest), // don't send answer
+      words: gameWords.map(({ answer: _answer, ...rest }) => rest), // don't send answer
       answers: gameWords.map(w => w.answer),               // keep for verification
     });
   } catch (error) {
@@ -197,8 +197,8 @@ Rules:
 // POST /api/games/scramble/check — check a single word answer
 router.post("/scramble/check", auth, async (req, res) => {
   try {
-    const { guess, answer } = req.body;
-    const correct = guess.toUpperCase().trim() === answer.toUpperCase().trim();
+    const { guess, answer: _answer } = req.body;
+    const correct = guess.toUpperCase().trim() === _answer.toUpperCase().trim();
 
     let xpResult = null;
     if (correct) {

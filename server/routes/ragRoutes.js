@@ -4,8 +4,7 @@ const pdfParse = require("pdf-parse/lib/pdf-parse.js");
 const auth     = require("../middleware/auth");
 const genAI    = require("../config/gemini");
 const Document = require("../models/Document");
-const Subject  = require("../models/Subject");
-const { awardXP }                       = require("./xpRoutes");
+const { awardXP } = require("./xpRoutes");
 const { chunkText, findRelevantChunks } = require("../utils/chunker");
 const { extractTextFromImage, isImage } = require("../utils/ocr"); // ← new
 
