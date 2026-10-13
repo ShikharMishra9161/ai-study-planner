@@ -929,7 +929,7 @@ export default function AIAssistant() {
       >
         {/* Tab bar */}
         <div className="flex border-b border-slate-800/60 flex-shrink-0">
-          {TABS.map(({ key, label, icon, desc }) => (
+          {TABS.map(({ key, label, icon: Icon, desc }) => (
             <button
               key={key}
               onClick={() => setActiveTab(key)}
@@ -941,7 +941,7 @@ export default function AIAssistant() {
                 }`}
             >
               <span className="text-lg">
-                <icon className="h-4 w-4" />
+                <Icon className="h-4 w-4" />
               </span>
               <span className="font-display font-semibold text-xs">
                 {label}

@@ -22,7 +22,7 @@ export default function XPBar() {
   if (!xp) return null;
 
   return (
-    <Link to="/leaderboard" className="hidden md:flex items-center gap-2 no-underline group">
+    <Link to="/leaderboard" className="flex items-center gap-2 no-underline group">
       <div className="flex items-center gap-2 bg-slate-800/60 border border-slate-700/60 rounded-lg px-2.5 py-1.5 hover:border-slate-600 transition-colors">
         <span className="text-sm">{xp.icon}</span>
         <div>
