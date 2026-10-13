@@ -104,11 +104,12 @@ router.get("/leaderboard", auth, async (req, res) => {
       .limit(10)
       .populate("userId", "name");
 
-    const leaderboard = topXP.map((x, i) => {
+    // Skip XP records whose user no longer exists (populate returns null for them)
+    const leaderboard = topXP.filter((x) => x.userId).map((x, i) => {
       const levelInfo = XP.getLevelInfo(x.totalXP);
       return {
         rank:     i + 1,
-        name:     x.userId?.name || "Unknown",
+        name:     x.userId.name,
         totalXP:  x.totalXP,
         level:    levelInfo.level,
         title:    levelInfo.title,
