@@ -64,7 +64,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-[#0d1117]/90 backdrop-blur-xl border-b border-slate-800/50">
+    <nav className="sticky top-0 z-50 bg-surface/90 backdrop-blur-xl border-b border-slate-800/50">
       <div className="h-16 px-4 sm:px-6 flex items-center justify-between gap-4">
         {/* Logo */}
         <Link
@@ -126,7 +126,7 @@ export default function Navbar() {
                   className="fixed inset-0 z-10"
                   onClick={() => setShowMenu(false)}
                 />
-                <div className="absolute right-0 top-10 z-20 w-52 bg-[#0d1117] border border-slate-800 rounded-xl shadow-xl py-1.5 animate-fade-up">
+                <div className="absolute right-0 top-10 z-20 w-52 bg-surface border border-slate-800 rounded-xl shadow-xl py-1.5 animate-fade-up">
                   <div className="px-4 py-2.5 border-b border-slate-800">
                     <p className="text-white text-sm font-semibold truncate">
                       {user?.name}
@@ -173,7 +173,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-slate-800/50 bg-[#0d1117] animate-fade-up">
+        <div className="md:hidden border-t border-slate-800/50 bg-surface animate-fade-up">
           <div className="px-4 py-3 grid grid-cols-2 gap-1">
             {NAV_LINKS.map(({ to, label, icon: Icon }) => {
               const active = location.pathname === to;

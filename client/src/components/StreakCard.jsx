@@ -25,15 +25,6 @@ export default function StreakCard() {
 
   const activity = view === "week" ? streak.weekActivity : streak.monthActivity;
 
-  // Flame emoji based on streak length
-  const flameEmoji =
-    streak.currentStreak >= 30
-      ? "🔥🔥🔥"
-      : streak.currentStreak >= 14
-      ? "🔥🔥"
-      : streak.currentStreak >= 1
-      ? "🔥"
-      : "💤";
 
   const streakColor =
     streak.currentStreak >= 14
@@ -45,7 +36,7 @@ export default function StreakCard() {
       : "text-slate-500";
 
   return (
-    <div className="card p-6 animate-fade-up">
+    <div className="card p-6">
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
         <h3 className="font-display font-semibold text-white">Study Streak</h3>
@@ -76,7 +67,7 @@ export default function StreakCard() {
           >
             {streak.currentStreak}
           </p>
-          <p className="text-xs text-slate-500">Current {flameEmoji}</p>
+          <p className="text-xs text-slate-500">Current</p>
         </div>
         <div className="text-center border-x border-slate-800">
           <p className="font-display font-bold text-3xl text-white leading-none mb-1">
@@ -101,7 +92,6 @@ export default function StreakCard() {
               <div
                 className={`w-full aspect-square rounded-lg transition-all duration-300
                   ${day.active ? "bg-cyan-500" : "bg-slate-800/60"}`}
-                style={{ animationDelay: `${i * 0.05}s` }}
                 title={day.date}
               />
               <span className="text-[10px] text-slate-600 font-medium">
@@ -165,14 +155,14 @@ export default function StreakCard() {
       {streak.currentStreak === 0 && (
         <div className="mt-3 text-center p-3 bg-slate-800/40 rounded-xl">
           <p className="text-xs text-slate-400">
-            Complete a task today to start your streak! 💪
+            Complete a task today to start a streak.
           </p>
         </div>
       )}
       {streak.currentStreak >= 7 && (
-        <div className="mt-3 text-center p-3 bg-gradient-to-r from-cyan-400/10 to-violet-400/10 border border-cyan-400/20 rounded-xl">
+        <div className="mt-3 text-center p-3 bg-cyan-400/10 border border-cyan-400/20 rounded-xl">
           <p className="text-xs text-cyan-400 font-semibold">
-            {streak.currentStreak} day streak! You're on fire! 🔥
+            {streak.currentStreak} days in a row. Keep it going.
           </p>
         </div>
       )}

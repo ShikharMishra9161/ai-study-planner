@@ -12,7 +12,6 @@ import {
   Trash2,
   Zap,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Layout from "../components/Layout";
 import API from "../utils/api";
@@ -38,9 +37,7 @@ const TABS = [
   },
 ];
 
-// ─────────────────────────────────────────────────────────────────────
-// SHARED COMPONENTS
-// ─────────────────────────────────────────────────────────────────────
+// Shared components
 function TypingDots() {
   return (
     <div className="flex gap-1.5 px-4 py-3">
@@ -55,9 +52,7 @@ function TypingDots() {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────
-// TAB 1: AI CHAT (proactive agent)
-// ─────────────────────────────────────────────────────────────────────
+// Chat tab
 const CHAT_SUGGESTIONS = [
   "What should I study today?",
   "Help me study my weakest subject",
@@ -145,7 +140,7 @@ function ChatTab() {
         if (a.tool === "clear_completed_tasks")
           toast.success(`${a.result.deleted} tasks cleared!`);
       });
-    } catch (err) {
+    } catch {
       toast.error("Failed to get response");
       setMessages((prev) => prev.slice(0, -1));
       setInput(msg);
@@ -162,7 +157,7 @@ function ChatTab() {
           <div className="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-cyan-400 flex-shrink-0 mt-1">
             <Sparkles className="h-3.5 w-3.5" />
           </div>
-          <div className="bg-[#0d1117] border border-slate-800 px-4 py-3 rounded-2xl rounded-tl-sm text-sm text-slate-300 max-w-[80%]">
+          <div className="bg-surface border border-slate-800 px-4 py-3 rounded-2xl rounded-tl-sm text-sm text-slate-300 max-w-[80%]">
             Hi <span className="text-white font-semibold">{user?.name}</span>!
             I'm your proactive AI agent — I can{" "}
             <span className="text-white font-medium">query your real data</span>{" "}
@@ -191,7 +186,7 @@ function ChatTab() {
           return (
             <div
               key={i}
-              className={`flex gap-3 animate-fade-up ${
+              className={`flex gap-3 ${
                 isUser ? "flex-row-reverse" : ""
               }`}
             >
@@ -265,7 +260,7 @@ function ChatTab() {
                   ${
                     isUser
                       ? "bg-cyan-500/10 border border-cyan-500/20 text-white rounded-tr-sm"
-                      : "bg-[#0d1117] border border-slate-800 text-slate-300 rounded-tl-sm"
+                      : "bg-surface border border-slate-800 text-slate-300 rounded-tl-sm"
                   }`}
                 >
                   {msg.text.split("\n").map((line, j, arr) => (
@@ -285,7 +280,7 @@ function ChatTab() {
             <div className="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-cyan-400">
               <Sparkles className="h-3.5 w-3.5" />
             </div>
-            <div className="bg-[#0d1117] border border-slate-800 rounded-2xl rounded-tl-sm">
+            <div className="bg-surface border border-slate-800 rounded-2xl rounded-tl-sm">
               <TypingDots />
             </div>
           </div>
@@ -331,9 +326,7 @@ function ChatTab() {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────
-// TAB 2: ASK PDF
-// ─────────────────────────────────────────────────────────────────────
+// PDF Q&A tab
 function PDFTab() {
   const [documents, setDocuments] = useState([]);
   const [selectedDoc, setSelectedDoc] = useState(null);
@@ -509,7 +502,7 @@ function PDFTab() {
               <div className="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-cyan-400 flex-shrink-0">
                 <Diamond className="h-3.5 w-3.5" />
               </div>
-              <div className="bg-[#0d1117] border border-slate-800 px-4 py-3 rounded-2xl rounded-tl-sm text-sm text-slate-300 max-w-[80%]">
+              <div className="bg-surface border border-slate-800 px-4 py-3 rounded-2xl rounded-tl-sm text-sm text-slate-300 max-w-[80%]">
                 <span className="text-white font-semibold">
                   {selectedDoc.filename}
                 </span>{" "}
@@ -560,7 +553,7 @@ function PDFTab() {
                     ${
                       isUser
                         ? "bg-cyan-500/10 border border-cyan-500/20 text-white rounded-tr-sm"
-                        : "bg-[#0d1117] border border-slate-800 text-slate-300 rounded-tl-sm"
+                        : "bg-surface border border-slate-800 text-slate-300 rounded-tl-sm"
                     }`}
                   >
                     {msg.text.split("\n").map((l, j, arr) => (
@@ -584,7 +577,7 @@ function PDFTab() {
                 <div className="w-7 h-7 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-cyan-400">
                   <Diamond className="h-3.5 w-3.5" />
                 </div>
-                <div className="bg-[#0d1117] border border-slate-800 rounded-2xl rounded-tl-sm">
+                <div className="bg-surface border border-slate-800 rounded-2xl rounded-tl-sm">
                   <TypingDots />
                 </div>
               </div>
@@ -634,9 +627,7 @@ function PDFTab() {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────
-// TAB 3: SUMMARIZE NOTES
-// ─────────────────────────────────────────────────────────────────────
+// Notes summary tab
 const DIFFICULTY_STYLE = {
   beginner: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20",
   intermediate: "text-amber-400 bg-amber-400/10 border-amber-400/20",
@@ -650,7 +641,7 @@ const SUMMARY_TABS = [
   { key: "questions", label: "Practice Q", icon: CircleHelp },
 ];
 
-function Flashcard({ front, back, index }) {
+function Flashcard({ front, back }) {
   const [flipped, setFlipped] = useState(false);
   return (
     <div
@@ -829,7 +820,7 @@ function SummaryTab() {
             </div>
 
             {/* Sub-tabs */}
-            <div className="flex gap-1 bg-[#0d1117] border border-slate-800 rounded-xl p-1">
+            <div className="flex gap-1 bg-surface border border-slate-800 rounded-xl p-1">
               {SUMMARY_TABS.map(({ key, label, icon }) => {
                 const Icon = icon;
                 return (
@@ -861,7 +852,7 @@ function SummaryTab() {
                   {result.keyPoints?.map((p, i) => (
                     <div
                       key={i}
-                      className="flex items-start gap-2 p-2 bg-[#060910] rounded-lg"
+                      className="flex items-start gap-2 p-2 bg-bg rounded-lg"
                     >
                       <span className="w-5 h-5 rounded-md bg-cyan-400/10 text-cyan-400 text-xs font-bold flex items-center justify-center flex-shrink-0">
                         {i + 1}
@@ -876,7 +867,6 @@ function SummaryTab() {
                   {result.flashcards?.map((c, i) => (
                     <Flashcard
                       key={i}
-                      index={i}
                       front={c.front}
                       back={c.back}
                     />
@@ -888,7 +878,7 @@ function SummaryTab() {
                   {result.practiceQuestions?.map((q, i) => (
                     <div
                       key={i}
-                      className="flex items-start gap-2 p-2 bg-[#060910] rounded-lg"
+                      className="flex items-start gap-2 p-2 bg-bg rounded-lg"
                     >
                       <span className="w-5 h-5 rounded-md bg-violet-400/10 text-violet-400 text-xs font-bold flex items-center justify-center flex-shrink-0">
                         Q{i + 1}
@@ -906,16 +896,14 @@ function SummaryTab() {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────
-// MAIN PAGE
-// ─────────────────────────────────────────────────────────────────────
+// Page
 export default function AIAssistant() {
   const [activeTab, setActiveTab] = useState("chat");
 
   return (
     <Layout>
       {/* Header */}
-      <div className="mb-6 animate-fade-up">
+      <div className="mb-6">
         <h2 className="page-title">AI Assistant</h2>
         <p className="page-subtitle">
           Your complete AI study toolkit — chat, PDF analysis, and note
@@ -924,7 +912,7 @@ export default function AIAssistant() {
       </div>
 
       <div
-        className="card animate-fade-up-1 flex flex-col"
+        className="card flex flex-col"
         style={{ height: "calc(100vh - 200px)", minHeight: "480px" }}
       >
         {/* Tab bar */}

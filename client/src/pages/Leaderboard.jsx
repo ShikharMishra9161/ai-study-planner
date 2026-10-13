@@ -56,14 +56,14 @@ export default function Leaderboard() {
   return (
     <Layout>
       {/* Header */}
-      <div className="mb-8 animate-fade-up">
+      <div className="mb-8">
         <h2 className="page-title">Leaderboard</h2>
         <p className="page-subtitle">Top students ranked by XP earned</p>
       </div>
 
       <div className="grid md:grid-cols-3 gap-6">
-        {/* ── My Stats ────────────────────────────────────────────── */}
-        <div className="space-y-4 animate-fade-up-1">
+        {/* My Stats */}
+        <div className="space-y-4">
           <h3 className="font-display font-semibold text-white">My Progress</h3>
 
           {myXP && (
@@ -101,7 +101,7 @@ export default function Leaderboard() {
                 </p>
 
                 <div className="mt-4 pt-4 border-t border-slate-800">
-                  <p className="font-display font-bold text-3xl gradient-text">
+                  <p className="font-display font-bold text-3xl text-cyan-400">
                     {myXP.totalXP}
                   </p>
                   <p className="text-xs text-slate-500 mt-1">Total XP earned</p>
@@ -196,8 +196,8 @@ export default function Leaderboard() {
           </div>
         </div>
 
-        {/* ── Leaderboard ──────────────────────────────────────────── */}
-        <div className="md:col-span-2 animate-fade-up-2">
+        {/* Leaderboard */}
+        <div className="md:col-span-2">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-display font-semibold text-white">
               Top Students
@@ -227,10 +227,9 @@ export default function Leaderboard() {
                 return (
                   <div
                     key={i}
-                    className={`card p-4 flex items-center gap-4 transition-all duration-200 animate-fade-up
+                    className={`card p-4 flex items-center gap-4 transition-all duration-200
                       ${student.isMe ? "border-cyan-500/30 bg-cyan-500/5" : ""}
                     `}
-                    style={{ animationDelay: `${i * 0.05}s` }}
                   >
                     {/* Rank */}
                     <div

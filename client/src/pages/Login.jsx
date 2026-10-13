@@ -26,7 +26,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-[#060910] flex items-center justify-center px-4 py-8">
+    <div className="min-h-screen bg-bg flex items-center justify-center px-4 py-8">
       {/* Subtle background */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(6,182,212,0.06),transparent_60%)] pointer-events-none" />
 
@@ -42,7 +42,7 @@ export default function Login() {
         </div>
 
         {/* Card */}
-        <div className="bg-[#0d1117] border border-slate-800 rounded-2xl p-8">
+        <div className="bg-surface border border-slate-800 rounded-2xl p-8">
           <h1 className="font-display font-bold text-2xl text-white mb-1">
             Welcome back
           </h1>

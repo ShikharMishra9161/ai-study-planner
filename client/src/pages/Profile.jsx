@@ -25,7 +25,7 @@ export default function Profile() {
       setUser(res.data);
       setName(res.data.name);
       setEmail(res.data.email);
-    } catch (_) {
+    } catch {
       navigate("/");
     }
   };
@@ -94,14 +94,14 @@ export default function Profile() {
 
   return (
     <Layout>
-      <div className="mb-8 animate-fade-up">
+      <div className="mb-8">
         <h2 className="page-title">Profile</h2>
         <p className="page-subtitle">Manage your account details</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* ── Avatar card ────────────────────────────────────────── */}
-        <div className="card p-6 text-center animate-fade-up-1">
+        {/* Avatar card */}
+        <div className="card p-6 text-center">
           <div className="w-20 h-20 rounded-full bg-cyan-500 flex items-center justify-center text-3xl font-bold text-gray-950 font-display mx-auto mb-4">
             {user.name[0].toUpperCase()}
           </div>
@@ -120,8 +120,8 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* ── Edit forms ─────────────────────────────────────────── */}
-        <div className="md:col-span-2 space-y-6 animate-fade-up-2">
+        {/* Edit forms */}
+        <div className="md:col-span-2 space-y-6">
           {/* Update profile */}
           <div className="card p-6">
             <h3 className="font-display font-semibold text-white mb-5">

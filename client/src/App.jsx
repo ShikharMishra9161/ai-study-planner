@@ -11,7 +11,6 @@ import AIAssistant  from "./pages/AIAssistant";
 import Leaderboard  from "./pages/Leaderboard";
 import Games        from "./pages/Games";
 import Profile      from "./pages/Profile";
-import "./index.css";
 
 function App() {
   return (
@@ -25,7 +24,7 @@ function App() {
             border: "1px solid #1e293b",
             borderRadius: "12px",
             fontSize: "0.875rem",
-            fontFamily: "'Plus Jakarta Sans', sans-serif",
+            fontFamily: "'Inter', sans-serif",
           },
           success: { iconTheme: { primary: "#34d399", secondary: "#0d1117" } },
           error:   { iconTheme: { primary: "#f87171", secondary: "#0d1117" } },

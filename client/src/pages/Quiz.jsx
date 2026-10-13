@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { CircleDashed, Sparkles } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Layout from "../components/Layout";
 import API from "../utils/api";
@@ -19,14 +18,8 @@ export default function Quiz() {
   const [result, setResult] = useState(null);
   const [pastQuizzes, setPastQuizzes] = useState([]);
   const [loadingPast, setLoadingPast] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/");
-      return;
-    }
     fetchSubjects();
     fetchPastQuizzes();
   }, []);
@@ -35,7 +28,9 @@ export default function Quiz() {
     try {
       const res = await API.get("/subjects");
       setSubjects(res.data);
-    } catch (_) {}
+    } catch {
+      toast.error("Failed to load subjects");
+    }
   };
 
   const fetchPastQuizzes = async () => {
@@ -43,7 +38,9 @@ export default function Quiz() {
     try {
       const res = await API.get("/quiz");
       setPastQuizzes(res.data);
-    } catch (_) {}
+    } catch {
+      toast.error("Failed to load past quizzes");
+    }
     setLoadingPast(false);
   };
 
@@ -105,7 +102,6 @@ export default function Quiz() {
   const answeredCount = Object.keys(answers).length;
   const totalQ = quiz?.questions?.length || 0;
 
-  // ── Score color ───────────────────────────────────────────────────
   const scoreColor = (pct) =>
     pct >= 80
       ? "text-emerald-400"
@@ -122,10 +118,10 @@ export default function Quiz() {
 
   return (
     <Layout>
-      {/* ── HOME STAGE ────────────────────────────────────────────── */}
+      {/* Home */}
       {stage === STAGES.HOME && (
         <>
-          <div className="mb-8 animate-fade-up">
+          <div className="mb-8">
             <h2 className="page-title">Quiz</h2>
             <p className="page-subtitle">
               Test your knowledge with AI-generated multiple choice questions
@@ -133,7 +129,7 @@ export default function Quiz() {
           </div>
 
           {/* Generate card */}
-          <div className="card p-6 mb-8 animate-fade-up-1">
+          <div className="card p-6 mb-8">
             <h3 className="font-display font-semibold text-white mb-5 flex items-center gap-2">
               <CircleDashed className="h-4 w-4 text-cyan-400" /> Generate New
               Quiz
@@ -184,7 +180,7 @@ export default function Quiz() {
           </div>
 
           {/* Past quizzes */}
-          <div className="animate-fade-up-2">
+          <div>
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-display font-semibold text-white">
                 Past Quizzes
@@ -211,11 +207,10 @@ export default function Quiz() {
               </div>
             ) : (
               <div className="space-y-3">
-                {pastQuizzes.map((q, i) => (
+                {pastQuizzes.map((q) => (
                   <div
                     key={q._id}
-                    className="card p-4 flex items-center gap-4 animate-fade-up"
-                    style={{ animationDelay: `${i * 0.05}s` }}
+                    className="card p-4 flex items-center gap-4"
                   >
                     <div
                       className={`w-10 h-10 rounded-xl flex items-center justify-center font-display font-bold text-sm flex-shrink-0
@@ -262,9 +257,9 @@ export default function Quiz() {
         </>
       )}
 
-      {/* ── QUIZ STAGE ────────────────────────────────────────────── */}
+      {/* Taking the quiz */}
       {stage === STAGES.QUIZ && quiz && (
-        <div className="animate-fade-up">
+        <div>
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -276,7 +271,7 @@ export default function Quiz() {
               </p>
             </div>
             <div className="text-right">
-              <p className="text-2xl font-display font-bold gradient-text">
+              <p className="text-2xl font-display font-bold text-cyan-400">
                 {answeredCount}/{totalQ}
               </p>
               <p className="text-xs text-slate-500">answered</p>
@@ -299,8 +294,7 @@ export default function Quiz() {
             {quiz.questions.map((q, qi) => (
               <div
                 key={qi}
-                className="card p-6 animate-fade-up"
-                style={{ animationDelay: `${qi * 0.05}s` }}
+                className="card p-6"
               >
                 <p className="text-xs text-slate-500 font-semibold uppercase tracking-widest mb-3">
                   Question {qi + 1}
@@ -319,7 +313,7 @@ export default function Quiz() {
                           ${
                             selected
                               ? "border-cyan-500 bg-cyan-500/10 text-cyan-300"
-                              : "border-slate-800 bg-[#060910] text-slate-400 hover:border-slate-600 hover:text-slate-200"
+                              : "border-slate-800 bg-bg text-slate-400 hover:border-slate-600 hover:text-slate-200"
                           }`}
                       >
                         <span
@@ -364,9 +358,9 @@ export default function Quiz() {
         </div>
       )}
 
-      {/* ── RESULT STAGE ──────────────────────────────────────────── */}
+      {/* Results */}
       {stage === STAGES.RESULT && result && (
-        <div className="animate-fade-up">
+        <div>
           <h2 className="page-title mb-2">Quiz Results</h2>
           <p className="page-subtitle mb-8">Here's how you did</p>
 
@@ -397,10 +391,9 @@ export default function Quiz() {
             {result.results.map((r, i) => (
               <div
                 key={i}
-                className={`card p-5 border-l-4 animate-fade-up ${
+                className={`card p-5 border-l-4 ${
                   r.isCorrect ? "border-l-emerald-400" : "border-l-rose-400"
                 }`}
-                style={{ animationDelay: `${i * 0.05}s` }}
               >
                 <div className="flex items-start gap-3 mb-3">
                   <span

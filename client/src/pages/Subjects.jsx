@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Diamond, Plus, Trash2 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Layout from "../components/Layout";
 import API from "../utils/api";
@@ -61,7 +60,7 @@ export default function Subjects() {
     try {
       const res = await API.get("/subjects");
       setSubjects(res.data);
-    } catch (_) {
+    } catch {
       toast.error("Failed to load subjects");
     }
     setLoading(false);
@@ -85,7 +84,7 @@ export default function Subjects() {
       setSubject("");
       setChapters("");
       fetchSubjects();
-    } catch (_) {
+    } catch {
       toast.error("Error creating subject");
     }
     setCreating(false);
@@ -105,7 +104,7 @@ export default function Subjects() {
       await API.delete(`/subjects/${id}`);
       setSubjects((prev) => prev.filter((s) => s._id !== id));
       toast.success(`"${name}" deleted`);
-    } catch (_) {
+    } catch {
       toast.error("Error deleting subject");
     }
     setDeletingId(null);
@@ -114,7 +113,7 @@ export default function Subjects() {
   return (
     <Layout>
       {/* Header */}
-      <div className="mb-8 animate-fade-up">
+      <div className="mb-8">
         <h2 className="page-title">Subjects</h2>
         <p className="page-subtitle">
           Organise your subjects and chapters for AI task generation
@@ -122,7 +121,7 @@ export default function Subjects() {
       </div>
 
       {/* Create form */}
-      <div className="card p-6 mb-8 animate-fade-up-1">
+      <div className="card p-6 mb-8">
         <h3 className="font-display font-semibold text-white mb-5 flex items-center gap-2">
           <Plus className="h-4 w-4 text-cyan-400" /> Add New Subject
         </h3>
@@ -169,7 +168,7 @@ export default function Subjects() {
       </div>
 
       {/* Subjects grid header */}
-      <div className="flex items-center justify-between mb-4 animate-fade-up-2">
+      <div className="flex items-center justify-between mb-4">
         <h3 className="font-display font-semibold text-white">Your Subjects</h3>
         <span className="text-xs text-slate-500 bg-slate-800/60 px-3 py-1 rounded-full">
           {subjects.length} total
@@ -184,7 +183,7 @@ export default function Subjects() {
           ))}
         </div>
       ) : subjects.length === 0 ? (
-        <div className="card p-12 text-center border-dashed animate-fade-up-2">
+        <div className="card p-12 text-center border-dashed">
           <p className="text-3xl text-slate-700 mb-2">
             <Diamond className="h-8 w-8 mx-auto" />
           </p>
@@ -203,14 +202,13 @@ export default function Subjects() {
                 key={s._id}
                 className={`card p-5 border-t-2 ${
                   accent.border
-                } transition-all duration-200 animate-fade-up group
+                } transition-all duration-200 group
                   ${
                     isDeleting
                       ? "opacity-50 scale-95"
                       : "hover:border-opacity-80"
                   }
                 `}
-                style={{ animationDelay: `${i * 0.05}s` }}
               >
                 {/* Card header */}
                 <div className="flex items-center gap-3 mb-4">

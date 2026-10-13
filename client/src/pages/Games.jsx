@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Layout from "../components/Layout";
 import API from "../utils/api";
@@ -10,9 +9,7 @@ const GAMES = [
   { key: "blitz",   label: "True/False Blitz",icon: "⚡", desc: "10 statements • Beat the clock" },
 ];
 
-// ─────────────────────────────────────────────────────────────────────
-// DAILY CHALLENGE
-// ─────────────────────────────────────────────────────────────────────
+// Daily challenge
 function DailyChallenge() {
   const [stage, setStage]     = useState("home"); // home | playing | result
   const [questions, setQuestions] = useState([]);
@@ -47,7 +44,7 @@ function DailyChallenge() {
       setResult(res.data);
       setStage("result");
       if (res.data.xp) toast.success(`+${res.data.xp.pointsEarned} XP earned!`);
-    } catch (err) {
+    } catch {
       toast.error("Failed to submit");
     }
     setLoading(false);
@@ -81,7 +78,7 @@ function DailyChallenge() {
 
       <div className="space-y-5">
         {questions.map((q, qi) => (
-          <div key={qi} className="card p-5 animate-fade-up" style={{ animationDelay: `${qi * 0.05}s` }}>
+          <div key={qi} className="card p-5">
             <p className="text-xs text-slate-500 font-semibold uppercase tracking-widest mb-2">Question {qi + 1}</p>
             <p className="text-white font-medium mb-4 leading-relaxed">{q.question}</p>
             <div className="grid grid-cols-1 gap-2">
@@ -90,7 +87,7 @@ function DailyChallenge() {
                   className={`text-left px-4 py-2.5 rounded-xl border text-sm font-medium transition-all duration-200
                     ${answers[qi] === oi
                       ? "border-cyan-500 bg-cyan-500/10 text-cyan-300"
-                      : "border-slate-800 bg-[#060910] text-slate-400 hover:border-slate-600 hover:text-slate-200"
+                      : "border-slate-800 bg-bg text-slate-400 hover:border-slate-600 hover:text-slate-200"
                     }`}>
                   <span className={`inline-flex items-center justify-center w-6 h-6 rounded-lg text-xs font-bold mr-3
                     ${answers[qi] === oi ? "bg-cyan-500 text-gray-950" : "bg-slate-800 text-slate-500"}`}>
@@ -149,9 +146,7 @@ function DailyChallenge() {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────
-// WORD SCRAMBLE
-// ─────────────────────────────────────────────────────────────────────
+// Word scramble
 function WordScramble({ subjects }) {
   const [stage, setStage]         = useState("home");
   const [selectedSubject, setSelectedSubject] = useState("");
@@ -181,7 +176,7 @@ function WordScramble({ subjects }) {
       setFeedback(null);
       setStage("playing");
       setTimeout(() => inputRef.current?.focus(), 100);
-    } catch (err) {
+    } catch {
       toast.error("Failed to generate game");
     }
     setLoading(false);
@@ -214,7 +209,9 @@ function WordScramble({ subjects }) {
           setTimeout(() => inputRef.current?.focus(), 100);
         }
       }, 1000);
-    } catch (_) {}
+    } catch {
+      toast.error("Couldn't check your answer");
+    }
     setChecking(false);
   };
 
@@ -289,7 +286,7 @@ function WordScramble({ subjects }) {
 
         {/* Feedback */}
         {feedback && (
-          <p className={`mt-3 text-sm font-bold animate-fade-up ${feedback === "correct" ? "text-emerald-400" : "text-rose-400"}`}>
+          <p className={`mt-3 text-sm font-bold ${feedback === "correct" ? "text-emerald-400" : "text-rose-400"}`}>
             {feedback === "correct" ? "✓ Correct! +10 XP" : `✕ The answer was ${answers[currentIdx]}`}
           </p>
         )}
@@ -333,9 +330,7 @@ function WordScramble({ subjects }) {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────
-// TRUE / FALSE BLITZ
-// ─────────────────────────────────────────────────────────────────────
+// True / false blitz
 function TrueFalseBlitz({ subjects }) {
   const [stage, setStage]         = useState("home");
   const [selectedSubject, setSelectedSubject] = useState("");
@@ -385,7 +380,7 @@ function TrueFalseBlitz({ subjects }) {
       setResults([]);
       setFeedback(null);
       setStage("playing");
-    } catch (err) {
+    } catch {
       toast.error("Failed to generate game");
     }
     setLoading(false);
@@ -414,8 +409,6 @@ function TrueFalseBlitz({ subjects }) {
     setTimeout(() => {
       setFeedback(null);
       if (currentIdx + 1 >= statements.length) {
-        // Award XP
-        const percentage = Math.round(((score + (correct ? 1 : 0)) / statements.length) * 100);
         API.post("/games/blitz/complete", { score: score + (correct ? 1 : 0), total: statements.length })
           .then(res => { if (res.data.xp) toast.success(`+${res.data.xp.pointsEarned} XP!`); })
           .catch(() => {});
@@ -481,7 +474,7 @@ function TrueFalseBlitz({ subjects }) {
         <p className="text-white font-medium text-lg leading-relaxed mb-6">{current.statement}</p>
 
         {feedback ? (
-          <div className="animate-fade-up">
+          <div>
             <p className={`font-bold text-lg mb-1 ${feedback === "correct" ? "text-emerald-400" : "text-rose-400"}`}>
               {feedback === "correct" ? "✓ Correct!" : "✕ Wrong!"}
             </p>
@@ -548,13 +541,10 @@ function TrueFalseBlitz({ subjects }) {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────
-// MAIN GAMES PAGE
-// ─────────────────────────────────────────────────────────────────────
+// Page
 export default function Games() {
   const [activeGame, setActiveGame] = useState("daily");
   const [subjects, setSubjects]     = useState([]);
-  const navigate                    = useNavigate();
 
   useEffect(() => {
     API.get("/subjects").then(res => setSubjects(res.data)).catch(() => {});
@@ -563,13 +553,13 @@ export default function Games() {
   return (
     <Layout>
       {/* Header */}
-      <div className="mb-8 animate-fade-up">
+      <div className="mb-8">
         <h2 className="page-title">Games</h2>
         <p className="page-subtitle">Learn while you play — earn XP for every game you complete</p>
       </div>
 
       {/* Game selector */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6 animate-fade-up-1">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
         {GAMES.map(({ key, label, icon, desc }) => (
           <button key={key} onClick={() => setActiveGame(key)}
             className={`card p-4 text-left transition-all duration-200
@@ -584,7 +574,7 @@ export default function Games() {
       </div>
 
       {/* Game area */}
-      <div className="card p-6 animate-fade-up-2">
+      <div className="card p-6">
         {activeGame === "daily"   && <DailyChallenge />}
         {activeGame === "scramble"&& <WordScramble subjects={subjects} />}
         {activeGame === "blitz"   && <TrueFalseBlitz subjects={subjects} />}

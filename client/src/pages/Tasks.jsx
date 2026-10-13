@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { ArrowUpRight, Sparkles, Star, X } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import Layout from "../components/Layout";
 import API from "../utils/api";
@@ -13,14 +12,8 @@ export default function Tasks() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
   const [lastMeta, setLastMeta] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/");
-      return;
-    }
     Promise.all([fetchSubjects(), fetchTasks()]);
   }, []);
 
@@ -28,7 +21,9 @@ export default function Tasks() {
     try {
       const res = await API.get("/subjects");
       setSubjects(res.data);
-    } catch (_) {}
+    } catch {
+      toast.error("Failed to load subjects");
+    }
   };
 
   const fetchTasks = async () => {
@@ -36,7 +31,7 @@ export default function Tasks() {
     try {
       const res = await API.get("/tasks");
       setTasks(res.data);
-    } catch (_) {
+    } catch {
       toast.error("Failed to load tasks");
     }
     setLoading(false);
@@ -94,7 +89,7 @@ export default function Tasks() {
       } else {
         toast.success("Marked as pending");
       }
-    } catch (_) {
+    } catch {
       toast.error("Failed to update task");
     }
   };
@@ -104,7 +99,7 @@ export default function Tasks() {
       await API.delete(`/tasks/${id}`);
       setTasks((prev) => prev.filter((t) => t._id !== id));
       toast.success("Task deleted");
-    } catch (_) {
+    } catch {
       toast.error("Failed to delete task");
     }
   };
@@ -131,7 +126,7 @@ export default function Tasks() {
   return (
     <Layout>
       {/* Header */}
-      <div className="mb-8 animate-fade-up">
+      <div className="mb-8">
         <h2 className="page-title">Tasks</h2>
         <p className="page-subtitle">
           AI-generated study tasks personalised to your progress
@@ -139,7 +134,7 @@ export default function Tasks() {
       </div>
 
       {/* Generate bar */}
-      <div className="card p-5 mb-4 animate-fade-up-1">
+      <div className="card p-5 mb-4">
         <h3 className="font-display font-semibold text-white mb-4 flex items-center gap-2">
           <Sparkles className="h-4 w-4 text-cyan-400" /> Generate AI Tasks
         </h3>
@@ -171,15 +166,15 @@ export default function Tasks() {
         </div>
       </div>
 
-      {/* ── AI Insight Banner (shows after generation) ── */}
+      {/* Shown after generating tasks */}
       {lastMeta && (
-        <div className="card p-4 mb-6 border-cyan-500/20 animate-fade-up">
+        <div className="card p-4 mb-6 border-cyan-500/20">
           <div className="flex items-start gap-3">
             <Sparkles className="h-4 w-4 text-cyan-400 mt-0.5" />
             <div className="flex-1">
               <p className="text-sm text-white font-semibold mb-1">
                 AI Insight for{" "}
-                <span className="gradient-text">{lastMeta.subject}</span>
+                <span className="text-cyan-400">{lastMeta.subject}</span>
               </p>
               <p className="text-xs text-slate-400 leading-relaxed">
                 Based on your{" "}
@@ -214,12 +209,12 @@ export default function Tasks() {
 
       {/* Progress bar */}
       {tasks.length > 0 && (
-        <div className="card p-5 mb-6 animate-fade-up-2">
+        <div className="card p-5 mb-6">
           <div className="flex justify-between items-center mb-2">
             <p className="text-sm text-slate-400 font-medium">
               {done} of {tasks.length} tasks complete
             </p>
-            <p className="text-sm font-bold gradient-text">{pct}%</p>
+            <p className="text-sm font-bold text-cyan-400">{pct}%</p>
           </div>
           <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
             <div
@@ -238,7 +233,7 @@ export default function Tasks() {
       )}
 
       {/* Filter tabs */}
-      <div className="flex items-center gap-2 mb-5 animate-fade-up-2">
+      <div className="flex items-center gap-2 mb-5">
         {[
           { key: "all", label: "All", count: tasks.length },
           { key: "pending", label: "Pending", count: pending },
@@ -290,16 +285,15 @@ export default function Tasks() {
         </div>
       ) : (
         <div className="space-y-2">
-          {filtered.map((t, i) => (
+          {filtered.map((t) => (
             <div
               key={t._id}
-              className={`flex items-center gap-4 p-4 rounded-xl border transition-all duration-200 group animate-fade-up
+              className={`flex items-center gap-4 p-4 rounded-xl border transition-all duration-200 group
                 ${
                   t.status === "done"
-                    ? "bg-[#060910] border-slate-800/40"
-                    : "bg-[#0d1117] border-slate-800/60 hover:border-slate-700"
+                    ? "bg-bg border-slate-800/40"
+                    : "bg-surface border-slate-800/60 hover:border-slate-700"
                 }`}
-              style={{ animationDelay: `${i * 0.03}s` }}
             >
               {/* Checkbox */}
               <button

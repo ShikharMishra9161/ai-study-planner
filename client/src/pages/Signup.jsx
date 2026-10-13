@@ -25,7 +25,7 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-[#060910] flex items-center justify-center px-4 py-8">
+    <div className="min-h-screen bg-bg flex items-center justify-center px-4 py-8">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(139,92,246,0.06),transparent_60%)] pointer-events-none" />
 
       <div className="w-full max-w-sm relative z-10">
@@ -39,7 +39,7 @@ export default function Signup() {
         </div>
 
         {/* Card */}
-        <div className="bg-[#0d1117] border border-slate-800 rounded-2xl p-8">
+        <div className="bg-surface border border-slate-800 rounded-2xl p-8">
           <h1 className="font-display font-bold text-2xl text-white mb-1">Create account</h1>
           <p className="text-slate-500 text-sm mb-7">Start your AI-powered study journey</p>
 

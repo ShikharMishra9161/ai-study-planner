@@ -9,13 +9,14 @@ import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell,
 } from "recharts";
+import toast from "react-hot-toast";
 import Layout from "../components/Layout";
 import StreakCard from "../components/StreakCard";
 import API from "../utils/api";
 
-function StatCard({ label, value, icon: Icon, color, iconColor, delay }) {
+function StatCard({ label, value, icon: Icon, color, iconColor}) {
   return (
-    <div className="bg-[#0d1117] border border-slate-800/60 rounded-xl p-5 animate-fade-up" style={{ animationDelay: delay }}>
+    <div className="bg-surface border border-slate-800/60 rounded-xl p-5">
       <div className="flex items-center justify-between mb-3">
         <div className={`w-8 h-8 rounded-lg ${color} flex items-center justify-center`}>
           <Icon size={15} className={iconColor} />
@@ -30,7 +31,7 @@ function StatCard({ label, value, icon: Icon, color, iconColor, delay }) {
 function CustomTooltip({ active, payload, label }) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="bg-[#0d1117] border border-slate-700 rounded-xl px-3 py-2 text-xs shadow-xl">
+    <div className="bg-surface border border-slate-700 rounded-xl px-3 py-2 text-xs shadow-xl">
       <p className="text-slate-400 mb-1">{label}</p>
       {payload.map((p, i) => (
         <p key={i} style={{ color: p.color }} className="font-semibold">{p.name}: {p.value}</p>
@@ -39,17 +40,15 @@ function CustomTooltip({ active, payload, label }) {
   );
 }
 
-const COLORS = ["#06b6d4", "#8b5cf6", "#10b981", "#f59e0b", "#f87171", "#e879f9"];
 
 export default function Dashboard() {
-  const [user, setUser]         = useState(null);
+  const [user]                  = useState(() => JSON.parse(localStorage.getItem("user") || "{}"));
   const [subjects, setSubjects] = useState([]);
   const [tasks, setTasks]       = useState([]);
   const [quizzes, setQuizzes]   = useState([]);
   const [loading, setLoading]   = useState(true);
 
   useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("user") || "{}"));
     fetchData();
   }, []);
 
@@ -62,6 +61,9 @@ export default function Dashboard() {
     if (sRes.status === "fulfilled") setSubjects(sRes.value.data);
     if (tRes.status === "fulfilled") setTasks(tRes.value.data);
     if (qRes.status === "fulfilled") setQuizzes(qRes.value.data);
+    if ([sRes, tRes, qRes].some(r => r.status === "rejected")) {
+      toast.error("Some dashboard data failed to load");
+    }
     setLoading(false);
   };
 
@@ -91,11 +93,11 @@ export default function Dashboard() {
   return (
     <Layout>
       {/* Hero */}
-      <div className="bg-[#0d1117] border border-slate-800/60 rounded-2xl p-6 sm:p-8 mb-6 relative overflow-hidden animate-fade-up">
+      <div className="bg-surface border border-slate-800/60 rounded-2xl p-6 sm:p-8 mb-6 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-48 h-48 bg-cyan-500/5 rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="flex items-start sm:items-center justify-between gap-4 relative z-10">
           <div>
-            <p className="text-slate-500 text-sm mb-1">{greeting} 👋</p>
+            <p className="text-slate-500 text-sm mb-1">{greeting},</p>
             <h2 className="font-display font-bold text-2xl sm:text-3xl text-white tracking-tight mb-2">
               {user?.name || "Student"}
             </h2>
@@ -126,10 +128,10 @@ export default function Dashboard() {
 
       {/* Stat cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-        <StatCard label="Subjects"  value={subjects.length} icon={BookOpen}    color="bg-cyan-500/10"   iconColor="text-cyan-400"   delay="0.05s" />
-        <StatCard label="Completed" value={done}             icon={CheckSquare} color="bg-emerald-500/10" iconColor="text-emerald-400" delay="0.1s"  />
-        <StatCard label="Pending"   value={pending}          icon={Clock}       color="bg-amber-500/10"  iconColor="text-amber-400"   delay="0.15s" />
-        <StatCard label="Avg Quiz"  value={avgQuiz ? `${avgQuiz}%` : "—"} icon={Trophy} color="bg-violet-500/10" iconColor="text-violet-400" delay="0.2s" />
+        <StatCard label="Subjects"  value={subjects.length} icon={BookOpen}    color="bg-cyan-500/10"   iconColor="text-cyan-400" />
+        <StatCard label="Completed" value={done}             icon={CheckSquare} color="bg-emerald-500/10" iconColor="text-emerald-400" />
+        <StatCard label="Pending"   value={pending}          icon={Clock}       color="bg-amber-500/10"  iconColor="text-amber-400" />
+        <StatCard label="Avg Quiz"  value={avgQuiz ? `${avgQuiz}%` : "—"} icon={Trophy} color="bg-violet-500/10" iconColor="text-violet-400" />
       </div>
 
       {/* Streak */}
@@ -141,7 +143,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
 
         {/* Bar chart */}
-        <div className="md:col-span-2 bg-[#0d1117] border border-slate-800/60 rounded-xl p-5 animate-fade-up-2">
+        <div className="md:col-span-2 bg-surface border border-slate-800/60 rounded-xl p-5">
           <p className="font-display font-semibold text-white text-sm mb-1">Tasks by Subject</p>
           <p className="text-xs text-slate-500 mb-4">Completed vs pending</p>
           {loading ? (
@@ -166,7 +168,7 @@ export default function Dashboard() {
         </div>
 
         {/* Pie chart */}
-        <div className="bg-[#0d1117] border border-slate-800/60 rounded-xl p-5 animate-fade-up-2">
+        <div className="bg-surface border border-slate-800/60 rounded-xl p-5">
           <p className="font-display font-semibold text-white text-sm mb-1">Task Status</p>
           <p className="text-xs text-slate-500 mb-4">Overall breakdown</p>
           {pieData.length === 0 ? (
@@ -194,7 +196,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
         {/* Recent tasks */}
-        <div className="md:col-span-2 bg-[#0d1117] border border-slate-800/60 rounded-xl p-5 animate-fade-up-3">
+        <div className="md:col-span-2 bg-surface border border-slate-800/60 rounded-xl p-5">
           <div className="flex items-center justify-between mb-4">
             <p className="font-display font-semibold text-white text-sm">Recent Tasks</p>
             <Link to="/tasks" className="text-xs text-cyan-400 hover:text-cyan-300 transition-colors flex items-center gap-1 no-underline">
@@ -211,7 +213,7 @@ export default function Dashboard() {
           ) : (
             <div className="space-y-2">
               {tasks.slice(0, 5).map(t => (
-                <div key={t._id} className="flex items-center gap-3 p-2.5 bg-[#060910] rounded-lg">
+                <div key={t._id} className="flex items-center gap-3 p-2.5 bg-bg rounded-lg">
                   <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${t.status === "done" ? "bg-emerald-400" : "bg-amber-400"}`} />
                   <span className={`flex-1 text-sm break-words min-w-0 ${t.status === "done" ? "line-through text-slate-600" : "text-slate-300"}`}>
                     {t.task}
@@ -227,7 +229,7 @@ export default function Dashboard() {
         </div>
 
         {/* Quick actions */}
-        <div className="space-y-2 animate-fade-up-4">
+        <div className="space-y-2">
           <p className="font-display font-semibold text-white text-sm mb-3">Quick Actions</p>
           {[
             { to: "/subjects",     icon: BookOpen,       label: "Manage Subjects", sub: "Add chapters",        color: "text-cyan-400"   },
@@ -238,7 +240,7 @@ export default function Dashboard() {
             { to: "/leaderboard",  icon: TrendingUp,     label: "Leaderboard",     sub: "Check your rank",     color: "text-sky-400"    },
           ].map(({ to, icon: Icon, label, sub, color }) => (
             <Link key={to} to={to}
-              className="flex items-center gap-3 p-3 bg-[#0d1117] border border-slate-800/60 rounded-lg hover:border-slate-700 transition-colors no-underline group">
+              className="flex items-center gap-3 p-3 bg-surface border border-slate-800/60 rounded-lg hover:border-slate-700 transition-colors no-underline group">
               <Icon size={16} className={`${color} flex-shrink-0`} />
               <div className="min-w-0">
                 <p className="text-white text-xs font-semibold">{label}</p>

@@ -16,7 +16,9 @@ export default function XPBar() {
     try {
       const res = await API.get("/xp");
       setXp(res.data);
-    } catch (_) {}
+    } catch {
+      // Polled in the background; keep showing the last value.
+    }
   };
 
   if (!xp) return null;
