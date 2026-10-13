@@ -8,13 +8,13 @@ const crypto = require('node:crypto');
 
 const app = require('../index');
 const User = require('../models/User');
-const connectDB = require('../config/db');
+const { connectTestDB } = require('./helpers/testDb');
 
 const refreshSecret = process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET;
 const hashRefreshToken = (token) => crypto.createHash('sha256').update(token).digest('hex');
 
 test('POST /api/auth/refresh issues a new access token', async () => {
-  await connectDB();
+  await connectTestDB();
   await User.deleteMany({});
 
   const userId = new mongoose.Types.ObjectId();
@@ -40,7 +40,7 @@ test('POST /api/auth/refresh issues a new access token', async () => {
 });
 
 test('POST /api/auth/refresh rotates and stores the new refresh token', async () => {
-  await connectDB();
+  await connectTestDB();
   await User.deleteMany({});
 
   const user = await User.create({
@@ -68,7 +68,7 @@ test('POST /api/auth/refresh rotates and stores the new refresh token', async ()
 });
 
 test('POST /api/auth/login sets an httpOnly refresh cookie', async () => {
-  await connectDB();
+  await connectTestDB();
   await User.deleteMany({});
 
   const hashedPassword = await bcrypt.hash('secret123', 10);
@@ -92,7 +92,7 @@ test('POST /api/auth/login sets an httpOnly refresh cookie', async () => {
 });
 
 test('POST /api/auth/logout revokes the current refresh token', async () => {
-  await connectDB();
+  await connectTestDB();
   await User.deleteMany({});
 
   const user = await User.create({
@@ -119,7 +119,7 @@ test('POST /api/auth/logout revokes the current refresh token', async () => {
 });
 
 test('GET /api/auth/me returns the current user role', async () => {
-  await connectDB();
+  await connectTestDB();
   await User.deleteMany({});
 
   const user = await User.create({
@@ -142,7 +142,7 @@ test('GET /api/auth/me returns the current user role', async () => {
 });
 
 test('GET /api/auth/admin-check rejects non-admin users', async () => {
-  await connectDB();
+  await connectTestDB();
   await User.deleteMany({});
 
   const user = await User.create({

@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 
 const app = require('../index');
 const User = require('../models/User');
-const connectDB = require('../config/db');
+const { connectTestDB } = require('./helpers/testDb');
 
 async function makeToken(role = 'student') {
   const user = await User.create({
@@ -23,7 +23,7 @@ async function makeToken(role = 'student') {
 }
 
 test('GET /api/auth/admin-check allows admins and rejects students', async () => {
-  await connectDB();
+  await connectTestDB();
   await User.deleteMany({});
 
   const admin = await makeToken('admin');
