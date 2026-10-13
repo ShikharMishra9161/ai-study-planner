@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { CircleHelp, Diamond, Sparkles, Trophy } from "lucide-react";
-import Layout from "../components/Layout";
 import API from "../utils/api";
 
 const RANK_STYLES = {
@@ -54,7 +53,7 @@ export default function Leaderboard() {
   };
 
   return (
-    <Layout>
+    <>
       {/* Header */}
       <div className="mb-8">
         <h2 className="page-title">Leaderboard</h2>
@@ -281,6 +280,6 @@ export default function Leaderboard() {
           )}
         </div>
       </div>
-    </Layout>
+    </>
   );
 }

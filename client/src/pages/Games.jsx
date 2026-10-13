@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from "react";
 import toast from "react-hot-toast";
-import Layout from "../components/Layout";
 import API from "../utils/api";
 
 const GAMES = [
@@ -551,7 +550,7 @@ export default function Games() {
   }, []);
 
   return (
-    <Layout>
+    <>
       {/* Header */}
       <div className="mb-8">
         <h2 className="page-title">Games</h2>
@@ -579,6 +578,6 @@ export default function Games() {
         {activeGame === "scramble"&& <WordScramble subjects={subjects} />}
         {activeGame === "blitz"   && <TrueFalseBlitz subjects={subjects} />}
       </div>
-    </Layout>
+    </>
   );
 }

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { CircleDashed, Sparkles } from "lucide-react";
 import toast from "react-hot-toast";
-import Layout from "../components/Layout";
 import API from "../utils/api";
 
 const STAGES = { HOME: "home", QUIZ: "quiz", RESULT: "result" };
@@ -117,7 +116,7 @@ export default function Quiz() {
       : "from-rose-400/20 to-rose-400/5 border-rose-400/30";
 
   return (
-    <Layout>
+    <>
       {/* Home */}
       {stage === STAGES.HOME && (
         <>
@@ -456,6 +455,6 @@ export default function Quiz() {
           </div>
         </div>
       )}
-    </Layout>
+    </>
   );
 }

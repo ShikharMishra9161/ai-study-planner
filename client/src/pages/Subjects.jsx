@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Diamond, Plus, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
-import Layout from "../components/Layout";
 import API from "../utils/api";
 
 const ACCENTS = [
@@ -111,7 +110,7 @@ export default function Subjects() {
   };
 
   return (
-    <Layout>
+    <>
       {/* Header */}
       <div className="mb-8">
         <h2 className="page-title">Subjects</h2>
@@ -257,6 +256,6 @@ export default function Subjects() {
           })}
         </div>
       )}
-    </Layout>
+    </>
   );
 }

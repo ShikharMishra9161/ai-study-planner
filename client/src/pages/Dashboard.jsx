@@ -10,7 +10,6 @@ import {
   PieChart, Pie, Cell,
 } from "recharts";
 import toast from "react-hot-toast";
-import Layout from "../components/Layout";
 import StreakCard from "../components/StreakCard";
 import API from "../utils/api";
 
@@ -91,7 +90,7 @@ export default function Dashboard() {
   const greeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
 
   return (
-    <Layout>
+    <>
       {/* Hero */}
       <div className="bg-surface border border-slate-800/60 rounded-2xl p-6 sm:p-8 mb-6 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-48 h-48 bg-cyan-500/5 rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
@@ -251,6 +250,6 @@ export default function Dashboard() {
           ))}
         </div>
       </div>
-    </Layout>
+    </>
   );
 }

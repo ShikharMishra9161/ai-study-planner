@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Layout       from "./components/Layout";
 import Login        from "./pages/Login";
 import Signup       from "./pages/Signup";
 import Dashboard    from "./pages/Dashboard";
@@ -33,14 +34,16 @@ function App() {
       <Routes>
         <Route path="/"       element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/dashboard"    element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-        <Route path="/subjects"     element={<ProtectedRoute><Subjects /></ProtectedRoute>} />
-        <Route path="/tasks"        element={<ProtectedRoute><Tasks /></ProtectedRoute>} />
-        <Route path="/quiz"         element={<ProtectedRoute><Quiz /></ProtectedRoute>} />
-        <Route path="/ai-assistant" element={<ProtectedRoute><AIAssistant /></ProtectedRoute>} />
-        <Route path="/leaderboard"  element={<ProtectedRoute><Leaderboard /></ProtectedRoute>} />
-        <Route path="/games"        element={<ProtectedRoute><Games /></ProtectedRoute>} />
-        <Route path="/profile"      element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+        <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+          <Route path="/dashboard"    element={<Dashboard />} />
+          <Route path="/subjects"     element={<Subjects />} />
+          <Route path="/tasks"        element={<Tasks />} />
+          <Route path="/quiz"         element={<Quiz />} />
+          <Route path="/ai-assistant" element={<AIAssistant />} />
+          <Route path="/leaderboard"  element={<Leaderboard />} />
+          <Route path="/games"        element={<Games />} />
+          <Route path="/profile"      element={<Profile />} />
+        </Route>
       </Routes>
     </Router>
   );

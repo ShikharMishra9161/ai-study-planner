@@ -13,7 +13,6 @@ import {
   Zap,
 } from "lucide-react";
 import toast from "react-hot-toast";
-import Layout from "../components/Layout";
 import API from "../utils/api";
 
 const TABS = [
@@ -901,7 +900,7 @@ export default function AIAssistant() {
   const [activeTab, setActiveTab] = useState("chat");
 
   return (
-    <Layout>
+    <>
       {/* Header */}
       <div className="mb-6">
         <h2 className="page-title">AI Assistant</h2>
@@ -948,6 +947,6 @@ export default function AIAssistant() {
           {activeTab === "summary" && <SummaryTab />}
         </div>
       </div>
-    </Layout>
+    </>
   );
 }

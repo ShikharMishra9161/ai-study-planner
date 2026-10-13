@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { ArrowUpRight, Sparkles, Star, X } from "lucide-react";
 import toast from "react-hot-toast";
-import Layout from "../components/Layout";
 import API from "../utils/api";
 
 export default function Tasks() {
@@ -124,7 +123,7 @@ export default function Tasks() {
   };
 
   return (
-    <Layout>
+    <>
       {/* Header */}
       <div className="mb-8">
         <h2 className="page-title">Tasks</h2>
@@ -352,6 +351,6 @@ export default function Tasks() {
           ))}
         </div>
       )}
-    </Layout>
+    </>
   );
 }

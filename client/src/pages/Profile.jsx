@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import Layout from "../components/Layout";
 import API from "../utils/api";
 
 export default function Profile() {
@@ -85,15 +84,15 @@ export default function Profile() {
 
   if (!user)
     return (
-      <Layout>
+      <>
         <div className="flex items-center justify-center h-64">
           <div className="skeleton w-64 h-8 rounded-xl" />
         </div>
-      </Layout>
+      </>
     );
 
   return (
-    <Layout>
+    <>
       <div className="mb-8">
         <h2 className="page-title">Profile</h2>
         <p className="page-subtitle">Manage your account details</p>
@@ -223,6 +222,6 @@ export default function Profile() {
           </div>
         </div>
       </div>
-    </Layout>
+    </>
   );
 }
