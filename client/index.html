@@ -20,6 +20,16 @@
     />
 
     <title>AI Study Planner</title>
+
+    <!-- Apply the saved theme before first paint so light mode doesn't flash dark -->
+    <script>
+      try {
+        var theme = localStorage.getItem("theme");
+        if (theme === "light" || (!theme && matchMedia("(prefers-color-scheme: light)").matches)) {
+          document.documentElement.classList.add("light");
+        }
+      } catch (e) {}
+    </script>
   </head>
 
   <body>

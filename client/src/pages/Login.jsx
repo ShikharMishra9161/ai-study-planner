@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { Mail, Lock, Sparkles, ArrowRight } from "lucide-react";
 import toast from "react-hot-toast";
 import API from "../utils/api";
+import ThemeToggle from "../components/ThemeToggle";
 
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -26,7 +27,8 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-bg flex items-center justify-center px-4 py-8">
+    <div className="relative min-h-screen bg-bg flex items-center justify-center px-4 py-8">
+      <ThemeToggle className="absolute top-4 right-4 z-20" />
       {/* Subtle background */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(6,182,212,0.06),transparent_60%)] pointer-events-none" />
 
@@ -34,7 +36,7 @@ export default function Login() {
         {/* Logo */}
         <div className="flex items-center gap-2 justify-center mb-8">
           <div className="w-8 h-8 rounded-lg bg-cyan-500 flex items-center justify-center">
-            <Sparkles size={16} className="text-white" />
+            <Sparkles size={16} className="text-on-accent" />
           </div>
           <span className="font-display font-bold text-lg text-white">
             StudyAI
@@ -96,7 +98,7 @@ export default function Login() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full mt-2 bg-cyan-500 hover:bg-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold text-sm py-2.5 px-4 rounded-xl transition-colors duration-150 flex items-center justify-center gap-2"
+              className="w-full mt-2 bg-cyan-500 hover:bg-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed text-on-accent font-semibold text-sm py-2.5 px-4 rounded-xl transition-colors duration-150 flex items-center justify-center gap-2"
             >
               {loading ? (
                 <span

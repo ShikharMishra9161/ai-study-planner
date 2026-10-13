@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { User, Mail, Lock, Sparkles, ArrowRight } from "lucide-react";
 import toast from "react-hot-toast";
 import API from "../utils/api";
+import ThemeToggle from "../components/ThemeToggle";
 
 export default function Signup() {
   const [form, setForm]       = useState({ name: "", email: "", password: "" });
@@ -25,7 +26,8 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-bg flex items-center justify-center px-4 py-8">
+    <div className="relative min-h-screen bg-bg flex items-center justify-center px-4 py-8">
+      <ThemeToggle className="absolute top-4 right-4 z-20" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(139,92,246,0.06),transparent_60%)] pointer-events-none" />
 
       <div className="w-full max-w-sm relative z-10">
@@ -33,7 +35,7 @@ export default function Signup() {
         {/* Logo */}
         <div className="flex items-center gap-2 justify-center mb-8">
           <div className="w-8 h-8 rounded-lg bg-cyan-500 flex items-center justify-center">
-            <Sparkles size={16} className="text-white" />
+            <Sparkles size={16} className="text-on-accent" />
           </div>
           <span className="font-display font-bold text-lg text-white">StudyAI</span>
         </div>
@@ -92,7 +94,7 @@ export default function Signup() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full mt-2 bg-cyan-500 hover:bg-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold text-sm py-2.5 px-4 rounded-xl transition-colors duration-150 flex items-center justify-center gap-2"
+              className="w-full mt-2 bg-cyan-500 hover:bg-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed text-on-accent font-semibold text-sm py-2.5 px-4 rounded-xl transition-colors duration-150 flex items-center justify-center gap-2"
             >
               {loading ? (
                 <span className="spinner" style={{ borderTopColor: "white", borderColor: "rgba(255,255,255,0.3)" }} />

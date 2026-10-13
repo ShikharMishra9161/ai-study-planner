@@ -16,6 +16,7 @@ import {
 import toast from "react-hot-toast";
 import API from "../utils/api";
 import XPBar from "./XPBar";
+import ThemeToggle from "./ThemeToggle";
 
 const NAV_LINKS = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -72,7 +73,7 @@ export default function Navbar() {
           className="flex items-center gap-2 no-underline flex-shrink-0"
         >
           <div className="w-7 h-7 rounded-lg bg-cyan-500 flex items-center justify-center">
-            <Sparkles size={14} className="text-white" />
+            <Sparkles size={14} className="text-on-accent" />
           </div>
           <span className="font-display font-bold text-base text-white tracking-tight">
             StudyAI
@@ -110,6 +111,8 @@ export default function Navbar() {
           <div className="hidden md:block">
             <XPBar />
           </div>
+
+          <ThemeToggle />
 
           {/* Avatar dropdown */}
           <div className="relative">

@@ -107,7 +107,7 @@ export default function Dashboard() {
           {/* Progress ring */}
           <div className="relative flex-shrink-0">
             <svg width="80" height="80" viewBox="0 0 80 80">
-              <circle cx="40" cy="40" r="32" fill="none" stroke="#1e293b" strokeWidth="6" />
+              <circle cx="40" cy="40" r="32" fill="none" className="stroke-slate-800" strokeWidth="6" />
               <circle
                 cx="40" cy="40" r="32" fill="none"
                 stroke="#06b6d4" strokeWidth="6"
@@ -155,7 +155,7 @@ export default function Dashboard() {
               <BarChart data={subjectChartData} barSize={14} barGap={3}>
                 <XAxis dataKey="name" tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fill: "#64748b", fontSize: 11 }} axisLine={false} tickLine={false} allowDecimals={false} />
-                <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(255,255,255,0.02)" }} />
+                <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgb(148 163 184 / 0.08)" }} />
                 <Bar dataKey="Done"    fill="#06b6d4" radius={[3, 3, 0, 0]} />
                 <Bar dataKey="Pending" fill="#f59e0b" radius={[3, 3, 0, 0]} />
               </BarChart>
