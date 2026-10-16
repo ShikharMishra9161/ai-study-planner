@@ -171,6 +171,7 @@ async function executeTool(toolName, toolArgs, userId) {
         filtered = tasks.filter(t =>
           t.subjectId?.subject?.toLowerCase().includes(toolArgs.subjectName.toLowerCase())
         );
+        
       }
 
       return {
@@ -435,7 +436,7 @@ EXAMPLE FLOWS:
 
     for (let iteration = 0; iteration < 8; iteration++) {
       const response = await genAI.models.generateContent({
-        model:    "-2.5-flashgemini",
+        model:    "gemini-2.5-flash",
         contents: loopContents,
         tools:    TOOLS,
       });
