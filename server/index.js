@@ -12,6 +12,7 @@ const helmet = require("helmet");
 validateEnv();
 
 const authRoutes    = require("./routes/authRoutes");
+const oauthRoutes   = require("./routes/oauthRoutes");
 const subjectRoutes = require("./routes/subjectRoutes");
 const taskRoutes    = require("./routes/taskRoutes");
 const aiRoutes      = require("./routes/aiRoutes");
@@ -31,7 +32,8 @@ const corsOptions = {
   origin: [
     "http://localhost:5173",
     "https://ai-study-planner-omega-five.vercel.app",
-  ],
+    process.env.CLIENT_URL,
+  ].filter(Boolean),
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
@@ -53,6 +55,7 @@ const aiRateLimiter = rateLimit({
   message: { message: "Too many AI requests, please try again later." },
 });
 
+app.use("/api/auth/oauth", oauthRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/subjects", subjectRoutes);
 app.use("/api/tasks", taskRoutes);

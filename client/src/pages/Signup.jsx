@@ -4,6 +4,7 @@ import { User, Mail, Lock, Sparkles, ArrowRight } from "lucide-react";
 import toast from "react-hot-toast";
 import API from "../utils/api";
 import ThemeToggle from "../components/ThemeToggle";
+import OAuthButtons from "../components/OAuthButtons";
 
 export default function Signup() {
   const [form, setForm]       = useState({ name: "", email: "", password: "" });
@@ -103,6 +104,8 @@ export default function Signup() {
               )}
             </button>
           </form>
+
+          <OAuthButtons />
         </div>
 
         <p className="text-center mt-5 text-slate-500 text-sm">

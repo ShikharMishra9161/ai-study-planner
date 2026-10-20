@@ -148,7 +148,19 @@ EMAIL_USER=your_gmail@gmail.com
 EMAIL_PASS=your_gmail_app_password
 CLIENT_URL=http://localhost:5173
 NODE_ENV=development
+
+# Optional: OAuth sign-in. Each provider shows up only when both its values are set.
+SERVER_URL=http://localhost:5000
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GITHUB_CLIENT_ID=your_github_client_id
+GITHUB_CLIENT_SECRET=your_github_client_secret
 ```
+
+OAuth redirect URIs to register with each provider:
+
+- Google (Cloud Console → Credentials → OAuth client ID, type "Web application"): `${SERVER_URL}/api/auth/oauth/google/callback`
+- GitHub (Settings → Developer settings → OAuth Apps): `${SERVER_URL}/api/auth/oauth/github/callback`
 
 Create `client/.env`:
 

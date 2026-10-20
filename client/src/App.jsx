@@ -4,6 +4,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Layout       from "./components/Layout";
 import Login        from "./pages/Login";
 import Signup       from "./pages/Signup";
+import OAuthCallback from "./pages/OAuthCallback";
 import Dashboard    from "./pages/Dashboard";
 import Subjects     from "./pages/Subjects";
 import Tasks        from "./pages/Tasks";
@@ -34,6 +35,7 @@ function App() {
       <Routes>
         <Route path="/"       element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/oauth/callback" element={<OAuthCallback />} />
         <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
           <Route path="/dashboard"    element={<Dashboard />} />
           <Route path="/subjects"     element={<Subjects />} />

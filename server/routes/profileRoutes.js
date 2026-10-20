@@ -59,6 +59,10 @@ router.put("/password", auth, async (req, res) => {
     }
 
     const user = await User.findById(req.user);
+    if (!user.password) {
+      return res.status(400).json({ message: "This account signs in with Google or GitHub and has no password" });
+    }
+
     const isMatch = await bcrypt.compare(currentPassword, user.password);
 
     if (!isMatch) {

@@ -1,36 +1,18 @@
 const express  = require("express");
 const bcrypt   = require("bcryptjs");
 const jwt      = require("jsonwebtoken");
-const crypto   = require("node:crypto");
 const User     = require("../models/User");
 const auth     = require("../middleware/auth");
+const {
+  setRefreshCookie,
+  signAccessToken,
+  signRefreshToken,
+  hashToken: hashRefreshToken,
+  publicUser,
+  startSession,
+} = require("../utils/authTokens");
 
 const router = express.Router();
-const ACCESS_TOKEN_TTL = "7d";
-const REFRESH_TOKEN_TTL = "30d";
-const isProduction = process.env.NODE_ENV === "production";
-
-function setRefreshCookie(res, refreshToken) {
-  res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    secure: isProduction,
-    sameSite: "lax",
-    maxAge: 30 * 24 * 60 * 60 * 1000,
-    path: "/",
-  });
-}
-
-function signAccessToken(user) {
-  return jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: ACCESS_TOKEN_TTL });
-}
-
-function signRefreshToken(user) {
-  return jwt.sign({ id: user._id }, process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET, { expiresIn: REFRESH_TOKEN_TTL });
-}
-
-function hashRefreshToken(token) {
-  return crypto.createHash("sha256").update(token).digest("hex");
-}
 
 function normalizeEmail(email) {
   return String(email || "").trim().toLowerCase();
@@ -111,22 +93,16 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
+    if (!user.password) {
+      return res.status(400).json({ message: "This account uses Google or GitHub sign-in" });
+    }
+
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const token = signAccessToken(user);
-    const refreshToken = signRefreshToken(user);
-    user.refreshTokenHash = hashRefreshToken(refreshToken);
-    await user.save();
-
-    setRefreshCookie(res, refreshToken);
-
-    res.json({
-      token,
-      user: { id: user._id, name: user.name, email: user.email, role: user.role || "student" },
-    });
+    res.json(await startSession(res, user));
   } catch (error) {
     res.status(500).json({ message: "Error logging in", error: error.message });
   }
@@ -159,10 +135,7 @@ router.post("/refresh", async (req, res) => {
 
     setRefreshCookie(res, nextRefreshToken);
 
-    res.json({
-      token,
-      user: { id: user._id, name: user.name, email: user.email, role: user.role || "student" },
-    });
+    res.json({ token, user: publicUser(user) });
   } catch (error) {
     res.status(401).json({ message: "Invalid refresh token", error: error.message });
   }
